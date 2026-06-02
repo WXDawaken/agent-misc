@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "env_id": "ledger_tower",
+  "default_suite": "core",
+  "default_data_path": "data\\ledger_tower.json",
+  "default_shared_prompt_path": "docs\\tracks\\shared.md",
+  "sdk": {
+    "direct_class": "LedgerTowerSDK",
+    "server_class": "LedgerTowerServerSDK",
+    "server_url_env": "LEDGER_TOWER_SERVER_URL",
+    "auth_token_env": "LEDGER_TOWER_AUTH_TOKEN",
+    "practice_auth_token_env": "LEDGER_TOWER_PRACTICE_AUTH_TOKEN",
+    "data_path_env": "LEDGER_TOWER_DATA_PATH"
+  },
+  "suites": {
+    "smoke": {
+      "description": "Fast sanity check for movement, combat preview, and server verification.",
+      "tracks": ["tutorial-clear"]
+    },
+    "core": {
+      "description": "Core fixed-map Ledger Tower routing tracks. Keep these on the default map for baseline comparisons.",
+      "tracks": ["tutorial-clear", "ledger-clear", "high-score-token-limited"]
+    },
+    "extended": {
+      "description": "Non-core scoring, practice-budget, best-of-N, and variant-map tracks.",
+      "tracks": [
+        "high-score",
+        "high-score-whitebox",
+        "high-score-practice-budgeted",
+        "high-score-best-of-3",
+        "boss-gated-high-score",
+        "generated-shop-timing-8f-high-score"
+      ]
+    },
+    "full": {
+      "description": "All active Ledger Tower tracks.",
+      "tracks": [
+        "tutorial-clear",
+        "ledger-clear",
+        "high-score",
+        "high-score-whitebox",
+        "high-score-token-limited",
+        "high-score-practice-budgeted",
+        "high-score-best-of-3",
+        "boss-gated-high-score",
+        "generated-shop-timing-8f-high-score"
+      ]
+    },
+    "scoring": {
+      "description": "High-score variants for isolating disclosure and practice-budget effects.",
+      "tracks": [
+        "high-score-token-limited",
+        "high-score-practice-budgeted",
+        "high-score-best-of-3",
+        "high-score-whitebox"
+      ]
+    },
+    "variants": {
+      "description": "Map variants that deliberately change route topology.",
+      "tracks": [
+        "boss-gated-high-score",
+        "generated-shop-timing-8f-high-score"
+      ]
+    }
+  },
+  "tracks": {
+    "tutorial-clear": {
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\tutorial-clear.md",
+      "tick_budget": 28,
+      "soft_stop_gap": 6,
+      "budget_rationale": "short mechanics track; a clean route reaches f3 well inside this budget",
+      "goal": {
+        "floor": "f3"
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, and `docs\\sdk-api.md`.",
+        "- Do not read `docs\\tasks.md`, `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"},
+        {"name": "tasks-doc", "pattern": "docs\\tasks.md"}
+      ]
+    },
+    "ledger-clear": {
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\ledger-clear.md",
+      "tick_budget": 70,
+      "soft_stop_gap": 8,
+      "budget_rationale": "full clear with route-planning margin over the reference smoke route",
+      "goal": {
+        "victory": true,
+        "boss": "f6_boss",
+        "item": "ledger_core",
+        "hp_min": 40
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "high-score": {
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score.md",
+      "tick_budget": 66,
+      "soft_stop_gap": 6,
+      "soft_stop_scoring": "linear_to_hard_budget",
+      "budget_rationale": "same full clear but tighter route-quality pressure",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "high-score-whitebox": {
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score-whitebox.md",
+      "tick_budget": 66,
+      "soft_stop_gap": 6,
+      "soft_stop_scoring": "linear_to_hard_budget",
+      "budget_rationale": "whitebox high-score variant with direct local practice and explicit route_score/reward formula disclosure",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- The track prompt explicitly discloses the high-score route_score and verification reward formulas.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "high-score-token-limited": {
+      "offline_practice": false,
+      "practice": {"mode": "none"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score.md",
+      "tick_budget": 66,
+      "soft_stop_gap": 6,
+      "soft_stop_scoring": "linear_to_hard_budget",
+      "budget_rationale": "fixed-map high-score track with no direct SDK or practice token; one official scored attempt",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "high-score-practice-budgeted": {
+      "offline_practice": false,
+      "practice": {
+        "mode": "server-token",
+        "max_new_games": 3,
+        "tick_budget": 80,
+        "soft_stop_gap": 8
+      },
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score.md",
+      "tick_budget": 66,
+      "soft_stop_gap": 6,
+      "soft_stop_scoring": "linear_to_hard_budget",
+      "budget_rationale": "server-only high-score track with three non-official practice games and one official scored attempt",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "high-score-best-of-3": {
+      "offline_practice": false,
+      "practice": {"mode": "none"},
+      "official_attempts": 3,
+      "official_scoring": "best_of_n",
+      "prompt_path": "docs\\tracks\\high-score.md",
+      "tick_budget": 66,
+      "soft_stop_gap": 6,
+      "soft_stop_scoring": "linear_to_hard_budget",
+      "budget_rationale": "server-only high-score track with three official attempts; runner selects the best verified score",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"}
+      ]
+    },
+    "boss-gated-high-score": {
+      "data_path": "data\\ledger_tower_boss_gated.json",
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\boss-gated-high-score.md",
+      "tick_budget": 66,
+      "soft_stop": false,
+      "budget_rationale": "boss-gated map variant with each floor boss placed on the mandatory route; hard budget only",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- The official and direct SDK sessions use the boss-gated map variant selected by the runner.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"},
+        {"name": "boss-gated-data-file", "pattern": "data\\ledger_tower_boss_gated.json"}
+      ]
+    },
+    "generated-shop-timing-8f-high-score": {
+      "data_path": "data\\ledger_tower_generated_shop_timing_8f.json",
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score-whitebox.md",
+      "tick_budget": 125,
+      "soft_stop": false,
+      "budget_rationale": "promoted 8-floor generated shop_timing map; hard budget only",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- The official and direct SDK sessions use the promoted generated shop-timing 8-floor map selected by the runner.",
+        "- The track prompt explicitly discloses the high-score route_score and verification reward formulas.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"},
+        {"name": "generated-shop-timing-8f-data-file", "pattern": "data\\ledger_tower_generated_shop_timing_8f.json"}
+      ]
+    }
+  }
+}

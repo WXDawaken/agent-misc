@@ -1,0 +1,61 @@
+{
+  "action_id": "add_double_jump_scaffold",
+  "summary": "Prepare a safe double-jump scaffold preview for the selected character script.",
+  "risk": "medium",
+  "requires_confirmation": true,
+  "steps": [
+    "Locate the attached script referenced by the selected node.",
+    "Preview new jump-count state and a guarded second-jump branch.",
+    "Leave TODO markers so the plugin can present the scaffold as a reviewable local patch."
+  ],
+  "affected_objects": [
+    "node_player"
+  ],
+  "affected_files": [
+    "res://player.gd"
+  ],
+  "preview_changes": [
+    "Add placeholder jump counter state.",
+    "Insert a second-jump branch guarded by TODO comments."
+  ],
+  "preview_sections": [
+    {
+      "id": "affected_files",
+      "title": "Affected Files",
+      "lines": [
+        "res://player.gd"
+      ],
+      "style": "bulleted"
+    },
+    {
+      "id": "preview_changes",
+      "title": "Preview Changes",
+      "lines": [
+        "Add placeholder jump counter state.",
+        "Insert a second-jump branch guarded by TODO comments."
+      ],
+      "style": "bulleted"
+    },
+    {
+      "id": "execution_boundary",
+      "title": "Execution Boundary",
+      "lines": [
+        "Core returns a preview patch only.",
+        "Plugin must keep actual editor mutation local and confirm before apply."
+      ],
+      "style": "note"
+    }
+  ],
+  "confirmation_details": {
+    "reason": "This preview targets an attached script and outlines a local scaffold the plugin would later apply inside the editor.",
+    "review_items": [
+      "Confirm the attached script path is the intended target.",
+      "Review the placeholder jump counter state before apply.",
+      "Review the guarded second-jump branch and TODO markers before apply."
+    ]
+  },
+  "engine_mutations": [
+    "none: plan preview only; plugin execution required"
+  ],
+  "rollback_strategy": "Do not apply automatically. Remove the scaffolded method and state additions if the user later rejects the plan."
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "arcane-lab": {
+      "command": "python",
+      "args": ["E:\\agent_misc\\playground\\mcp_server.py"]
+    }
+  }
+}

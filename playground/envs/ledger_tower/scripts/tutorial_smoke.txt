@@ -1,0 +1,18 @@
+# Reach floor f3 from a fresh Ledger Tower state.
+move n
+move s
+move e
+move e
+move e
+move e
+move n 4
+move e
+move e
+move e
+move e
+move w
+move n
+move e
+move n
+move n
+move n

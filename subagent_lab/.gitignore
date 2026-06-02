@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.pyc.*
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+test/.tmp/
+test/_write_probe.txt
+codex-*-last.txt
+_root_residue/
+.DS_Store
+Thumbs.db

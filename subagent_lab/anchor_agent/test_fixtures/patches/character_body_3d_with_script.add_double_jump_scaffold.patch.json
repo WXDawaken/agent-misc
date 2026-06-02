@@ -1,0 +1,10 @@
+{
+  "patch_id": "patch_add_double_jump_scaffold_node_player",
+  "action_id": "add_double_jump_scaffold",
+  "patch_kind": "script_scaffold",
+  "target_id": "node_player",
+  "target_path": "res://player.gd",
+  "format": "text/x-gdscript",
+  "content": "# TODO(anchor_agent): add double-jump state\nvar jump_count := 0\nvar max_jump_count := 2\n",
+  "apply_mode": "plugin_local_preview_only"
+}

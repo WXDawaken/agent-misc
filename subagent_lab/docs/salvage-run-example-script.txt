@@ -1,0 +1,5 @@
+# Quick scripted Salvage Run demo
+scan
+dash d
+wait
+quit

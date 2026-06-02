@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.orbitlens/
+.orbitlens-test/
+forgecad-tests/**/*.png
+forgecad-tests/**/*.stl
+forgecad-tests/**/*.3mf
+forgecad-tests/**/*.glb
+forgecad-tests/**/*.gltf
+npm-debug.log*

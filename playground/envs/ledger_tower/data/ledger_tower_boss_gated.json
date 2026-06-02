@@ -1,0 +1,389 @@
+{
+  "version": 1,
+  "metadata": {
+    "id": "ledger_tower_boss_gated",
+    "variant": "boss_gated",
+    "title": "Ledger Tower: Boss Gated",
+    "summary": "A room-gated Ledger Tower variant where each floor has an unavoidable boss between open routing zones."
+  },
+  "initial_state": {
+    "floor": "f1",
+    "position": [1, 5],
+    "hp": 120,
+    "atk": 12,
+    "def": 5,
+    "gold": 0,
+    "keys": {
+      "yellow": 0,
+      "blue": 0,
+      "red": 0
+    }
+  },
+  "items": {
+    "small_potion": {
+      "name": "Small Potion",
+      "effect": {
+        "hp": 50
+      }
+    },
+    "big_potion": {
+      "name": "Big Potion",
+      "effect": {
+        "hp": 120
+      }
+    },
+    "large_potion": {
+      "name": "Large Potion",
+      "effect": {
+        "hp": 180
+      }
+    },
+    "attack_gem": {
+      "name": "Attack Gem",
+      "effect": {
+        "atk": 3
+      }
+    },
+    "sharp_ledger": {
+      "name": "Sharp Ledger",
+      "effect": {
+        "atk": 4
+      }
+    },
+    "defense_gem": {
+      "name": "Defense Gem",
+      "effect": {
+        "def": 2
+      }
+    },
+    "ward_gem": {
+      "name": "Ward Gem",
+      "effect": {
+        "def": 4
+      }
+    },
+    "yellow_key": {
+      "name": "Yellow Key",
+      "effect": {
+        "keys": {
+          "yellow": 1
+        }
+      }
+    },
+    "blue_key": {
+      "name": "Blue Key",
+      "effect": {
+        "keys": {
+          "blue": 1
+        }
+      }
+    },
+    "ledger_core": {
+      "name": "Ledger Core",
+      "artifact": true,
+      "effect": {}
+    }
+  },
+  "enemies": {
+    "dust_clerk": {
+      "name": "Dust Clerk",
+      "hp": 35,
+      "atk": 14,
+      "def": 2,
+      "gold": 2
+    },
+    "ink_moth": {
+      "name": "Ink Moth",
+      "hp": 20,
+      "atk": 10,
+      "def": 4,
+      "gold": 12
+    },
+    "glass_duelist": {
+      "name": "Glass Duelist",
+      "hp": 60,
+      "atk": 44,
+      "def": 4,
+      "gold": 18
+    },
+    "coin_sentinel": {
+      "name": "Coin Sentinel",
+      "hp": 80,
+      "atk": 38,
+      "def": 10,
+      "gold": 24
+    },
+    "ward_keeper": {
+      "name": "Ward Keeper",
+      "hp": 90,
+      "atk": 30,
+      "def": 14,
+      "gold": 16
+    },
+    "brass_guard": {
+      "name": "Brass Guard",
+      "hp": 70,
+      "atk": 24,
+      "def": 8,
+      "gold": 7
+    },
+    "audit_wisp": {
+      "name": "Audit Wisp",
+      "hp": 55,
+      "atk": 32,
+      "def": 6,
+      "gold": 10
+    },
+    "vault_knight": {
+      "name": "Vault Knight",
+      "hp": 100,
+      "atk": 35,
+      "def": 12,
+      "gold": 12
+    },
+    "entry_auditor": {
+      "name": "Entry Auditor",
+      "hp": 35,
+      "atk": 14,
+      "def": 2,
+      "gold": 2,
+      "boss": true
+    },
+    "annex_auditor": {
+      "name": "Annex Auditor",
+      "hp": 45,
+      "atk": 18,
+      "def": 4,
+      "gold": 4,
+      "boss": true
+    },
+    "trade_auditor": {
+      "name": "Trade Auditor",
+      "hp": 55,
+      "atk": 32,
+      "def": 6,
+      "gold": 10,
+      "boss": true
+    },
+    "guard_auditor": {
+      "name": "Guard Auditor",
+      "hp": 70,
+      "atk": 24,
+      "def": 8,
+      "gold": 7,
+      "boss": true
+    },
+    "vault_auditor": {
+      "name": "Vault Auditor",
+      "hp": 100,
+      "atk": 35,
+      "def": 12,
+      "gold": 12,
+      "boss": true
+    },
+    "balance_auditor": {
+      "name": "Balance Auditor",
+      "hp": 190,
+      "atk": 52,
+      "def": 21,
+      "gold": 50,
+      "boss": true
+    }
+  },
+  "shops": {
+    "standard": {
+      "name": "Tally Shop",
+      "offers": {
+        "attack": {
+          "name": "Attack training",
+          "cost": 12,
+          "effect": {
+            "atk": 4
+          }
+        },
+        "defense": {
+          "name": "Defense training",
+          "cost": 12,
+          "effect": {
+            "def": 3
+          }
+        },
+        "hp": {
+          "name": "Emergency ration",
+          "cost": 10,
+          "effect": {
+            "hp": 100
+          }
+        }
+      }
+    }
+  },
+  "floors": [
+    {
+      "id": "f1",
+      "name": "Entry Ledger",
+      "index": 1,
+      "grid": [
+        "#########",
+        "#..#....#",
+        "#..#....#",
+        "#..#....#",
+        "#..#....#",
+        "#.......#",
+        "#..#....#",
+        "#..#....#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f1_attack", "type": "item", "item": "attack_gem", "x": 1, "y": 4},
+        {"id": "f1_key", "type": "item", "item": "yellow_key", "x": 2, "y": 5},
+        {"id": "f1_boss", "type": "enemy", "enemy": "entry_auditor", "x": 3, "y": 5},
+        {"id": "f1_potion", "type": "item", "item": "small_potion", "x": 4, "y": 5},
+        {"id": "f1_moth", "type": "enemy", "enemy": "ink_moth", "x": 6, "y": 3},
+        {"id": "f1_blue_key", "type": "item", "item": "blue_key", "x": 7, "y": 3},
+        {"id": "f1_up", "type": "stairs", "x": 5, "y": 1, "to_floor": "f2", "to_position": [1, 5]}
+      ]
+    },
+    {
+      "id": "f2",
+      "name": "Key Annex",
+      "index": 2,
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#...#...#",
+        "#...#...#",
+        "#.......#",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f2_down", "type": "stairs", "x": 1, "y": 5, "to_floor": "f1", "to_position": [5, 1]},
+        {"id": "f2_yellow_door", "type": "door", "key": "yellow", "x": 2, "y": 5},
+        {"id": "f2_defense", "type": "item", "item": "defense_gem", "x": 3, "y": 5},
+        {"id": "f2_boss", "type": "enemy", "enemy": "annex_auditor", "x": 4, "y": 5},
+        {"id": "f2_blue_key", "type": "item", "item": "blue_key", "x": 5, "y": 5},
+        {"id": "f2_attack", "type": "item", "item": "attack_gem", "x": 5, "y": 4},
+        {"id": "f2_guard", "type": "enemy", "enemy": "brass_guard", "x": 5, "y": 3},
+        {"id": "f2_potion", "type": "item", "item": "big_potion", "x": 5, "y": 2},
+        {"id": "f2_up", "type": "stairs", "x": 5, "y": 1, "to_floor": "f3", "to_position": [1, 5]}
+      ]
+    },
+    {
+      "id": "f3",
+      "name": "Trade Mezzanine",
+      "index": 3,
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#...#...#",
+        "#...#...#",
+        "#.......#",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f3_down", "type": "stairs", "x": 1, "y": 5, "to_floor": "f2", "to_position": [5, 1]},
+        {"id": "f3_shop", "type": "shop", "shop": "standard", "x": 2, "y": 5},
+        {"id": "f3_yellow_key", "type": "item", "item": "yellow_key", "x": 3, "y": 5},
+        {"id": "f3_boss", "type": "enemy", "enemy": "trade_auditor", "x": 4, "y": 5},
+        {"id": "f3_potion", "type": "item", "item": "small_potion", "x": 5, "y": 5},
+        {"id": "f3_duelist", "type": "enemy", "enemy": "glass_duelist", "x": 6, "y": 5},
+        {"id": "f3_sharp", "type": "item", "item": "sharp_ledger", "x": 7, "y": 5},
+        {"id": "f3_defense", "type": "item", "item": "defense_gem", "x": 5, "y": 4},
+        {"id": "f3_blue_door", "type": "door", "key": "blue", "x": 5, "y": 3},
+        {"id": "f3_attack", "type": "item", "item": "attack_gem", "x": 5, "y": 2},
+        {"id": "f3_up", "type": "stairs", "x": 5, "y": 1, "to_floor": "f4", "to_position": [1, 5]}
+      ]
+    },
+    {
+      "id": "f4",
+      "name": "Guard Accounts",
+      "index": 4,
+      "grid": [
+        "#########",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#####.###",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f4_down", "type": "stairs", "x": 1, "y": 5, "to_floor": "f3", "to_position": [5, 1]},
+        {"id": "f4_yellow_door", "type": "door", "key": "yellow", "x": 2, "y": 5},
+        {"id": "f4_attack", "type": "item", "item": "attack_gem", "x": 3, "y": 5},
+        {"id": "f4_defense", "type": "item", "item": "defense_gem", "x": 4, "y": 5},
+        {"id": "f4_potion", "type": "item", "item": "big_potion", "x": 5, "y": 5},
+        {"id": "f4_boss", "type": "enemy", "enemy": "guard_auditor", "x": 5, "y": 4},
+        {"id": "f4_shop", "type": "shop", "shop": "standard", "x": 5, "y": 3},
+        {"id": "f4_knight", "type": "enemy", "enemy": "vault_knight", "x": 5, "y": 2},
+        {"id": "f4_blue_shortcut", "type": "door", "key": "blue", "x": 6, "y": 3},
+        {"id": "f4_up", "type": "stairs", "x": 5, "y": 1, "to_floor": "f5", "to_position": [1, 5]}
+      ]
+    },
+    {
+      "id": "f5",
+      "name": "Vault Balance",
+      "index": 5,
+      "grid": [
+        "#########",
+        "#.......#",
+        "#.......#",
+        "#####.###",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f5_down", "type": "stairs", "x": 1, "y": 5, "to_floor": "f4", "to_position": [5, 1]},
+        {"id": "f5_potion_small", "type": "item", "item": "small_potion", "x": 2, "y": 5},
+        {"id": "f5_attack", "type": "item", "item": "attack_gem", "x": 3, "y": 5},
+        {"id": "f5_wisp", "type": "enemy", "enemy": "audit_wisp", "x": 4, "y": 5},
+        {"id": "f5_shop", "type": "shop", "shop": "standard", "x": 5, "y": 5},
+        {"id": "f5_sentinel", "type": "enemy", "enemy": "coin_sentinel", "x": 6, "y": 5},
+        {"id": "f5_large_potion", "type": "item", "item": "large_potion", "x": 7, "y": 5},
+        {"id": "f5_yellow_key", "type": "item", "item": "yellow_key", "x": 5, "y": 4},
+        {"id": "f5_boss", "type": "enemy", "enemy": "vault_auditor", "x": 5, "y": 3},
+        {"id": "f5_potion_big", "type": "item", "item": "big_potion", "x": 5, "y": 2},
+        {"id": "f5_up", "type": "stairs", "x": 5, "y": 1, "to_floor": "f6", "to_position": [1, 5]}
+      ]
+    },
+    {
+      "id": "f6",
+      "name": "Final Audit",
+      "index": 6,
+      "grid": [
+        "#########",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#####.###",
+        "#.......#",
+        "#.......#",
+        "#.......#",
+        "#########"
+      ],
+      "entities": [
+        {"id": "f6_down", "type": "stairs", "x": 1, "y": 5, "to_floor": "f5", "to_position": [5, 1]},
+        {"id": "f6_yellow_door", "type": "door", "key": "yellow", "x": 2, "y": 5},
+        {"id": "f6_defense", "type": "item", "item": "defense_gem", "x": 3, "y": 5},
+        {"id": "f6_attack", "type": "item", "item": "attack_gem", "x": 4, "y": 5},
+        {"id": "f6_shop", "type": "shop", "shop": "standard", "x": 5, "y": 5},
+        {"id": "f6_ward_keeper", "type": "enemy", "enemy": "ward_keeper", "x": 6, "y": 5},
+        {"id": "f6_ward", "type": "item", "item": "ward_gem", "x": 7, "y": 5},
+        {"id": "f6_boss", "type": "enemy", "enemy": "balance_auditor", "x": 5, "y": 4},
+        {"id": "f6_core", "type": "item", "item": "ledger_core", "x": 5, "y": 3},
+        {"id": "f6_exit", "type": "exit", "requires_item": "ledger_core", "x": 5, "y": 2}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1069 @@
+{
+  "metadata": {
+    "id": "arcane_lab",
+    "title": "Arcane Lab: A Text RPG Agent Testbed",
+    "version": "0.1.0",
+    "summary": "An original magic research incremental RPG environment built for agent evaluation."
+  },
+  "base": {
+    "max_mana": 100,
+    "mana_rate": 5,
+    "max_hp": 60,
+    "attack": 4,
+    "defense": 3,
+    "study_xp": 12,
+    "study_cost": 10,
+    "wizard_cost": 50
+  },
+  "initial_resources": {
+    "coins": 40,
+    "ore": 0,
+    "herb": 0,
+    "paper": 0,
+    "crystal": 0,
+    "relic_shard": 0
+  },
+  "initial_elements": ["ember", "stone", "tide", "gale"],
+  "initial_areas": ["training_yard"],
+  "elements": {
+    "ember": {
+      "label": "Ember",
+      "combat": "attack",
+      "description": "Heat, courage, and direct force."
+    },
+    "stone": {
+      "label": "Stone",
+      "combat": "defense",
+      "description": "Mass, tools, and durability."
+    },
+    "tide": {
+      "label": "Tide",
+      "combat": "defense",
+      "description": "Recovery, flow, and mana shaping."
+    },
+    "gale": {
+      "label": "Gale",
+      "combat": "attack",
+      "description": "Speed, scouting, and precision."
+    },
+    "mind": {
+      "label": "Mind",
+      "combat": "attack",
+      "description": "Planning, automation, and efficient learning."
+    },
+    "vital": {
+      "label": "Vital",
+      "combat": "defense",
+      "description": "Healing, endurance, and companions."
+    }
+  },
+  "spells": [
+    {
+      "id": "kindle_mana",
+      "name": "Kindle Mana",
+      "element": "ember",
+      "level": 1,
+      "mana": 10,
+      "automation": true,
+      "effect": {
+        "mana": 12
+      },
+      "description": "Recover a small burst of mana by burning stray sparks."
+    },
+    {
+      "id": "shape_pebble",
+      "name": "Shape Pebble",
+      "element": "stone",
+      "level": 1,
+      "mana": 8,
+      "automation": true,
+      "effect": {
+        "resources": {
+          "ore": 3
+        }
+      },
+      "description": "Condense loose grit into useful ore."
+    },
+    {
+      "id": "mist_call",
+      "name": "Mist Call",
+      "element": "tide",
+      "level": 1,
+      "mana": 12,
+      "automation": true,
+      "effect": {
+        "resources": {
+          "herb": 2
+        },
+        "heal": 5
+      },
+      "description": "Draw dew and hardy herbs from the air."
+    },
+    {
+      "id": "tailwind",
+      "name": "Tailwind",
+      "element": "gale",
+      "level": 1,
+      "mana": 14,
+      "automation": true,
+      "effect": {
+        "buff": {
+          "explore": 4,
+          "duration": 3
+        }
+      },
+      "description": "Briefly improve exploration checks."
+    },
+    {
+      "id": "fire_lance",
+      "name": "Fire Lance",
+      "element": "ember",
+      "level": 2,
+      "mana": 18,
+      "automation": false,
+      "effect": {
+        "buff": {
+          "attack": 9,
+          "duration": 3
+        }
+      },
+      "description": "Prepare a temporary attack boost for dangerous routes."
+    },
+    {
+      "id": "stone_skin",
+      "name": "Stone Skin",
+      "element": "stone",
+      "level": 2,
+      "mana": 16,
+      "automation": false,
+      "effect": {
+        "buff": {
+          "defense": 7,
+          "duration": 3
+        }
+      },
+      "description": "Prepare a temporary defense boost."
+    },
+    {
+      "id": "rain_focus",
+      "name": "Rain Focus",
+      "element": "tide",
+      "level": 3,
+      "mana": 24,
+      "automation": true,
+      "effect": {
+        "mana": 20,
+        "resources": {
+          "paper": 1
+        }
+      },
+      "description": "Turn careful breathing into mana and notes."
+    },
+    {
+      "id": "gale_quill",
+      "name": "Gale Quill",
+      "element": "gale",
+      "level": 3,
+      "mana": 22,
+      "automation": true,
+      "effect": {
+        "resources": {
+          "paper": 3
+        }
+      },
+      "description": "Let a moving quill write field notes."
+    },
+    {
+      "id": "braid_channel",
+      "name": "Braid Channel",
+      "element": "universal",
+      "level": 1,
+      "mana": 40,
+      "automation": true,
+      "requires_storyline": "fourfold_channel",
+      "effect": {
+        "element_xp_all": 6
+      },
+      "description": "Distribute practice across every unlocked element."
+    },
+    {
+      "id": "mind_sort",
+      "name": "Mind Sort",
+      "element": "mind",
+      "level": 1,
+      "mana": 32,
+      "automation": true,
+      "requires_storyline": "quiet_archive",
+      "effect": {
+        "resources": {
+          "paper": 2,
+          "crystal": 1
+        }
+      },
+      "description": "Sort research notes into reusable patterns."
+    },
+    {
+      "id": "route_sketch",
+      "name": "Route Sketch",
+      "element": "mind",
+      "level": 1,
+      "mana": 28,
+      "automation": false,
+      "requires_storyline": "quiet_archive",
+      "effect": {
+        "buff": {
+          "explore": 10,
+          "duration": 3
+        }
+      },
+      "description": "Sketch the safest route through a dangerous area."
+    },
+    {
+      "id": "keen_focus",
+      "name": "Keen Focus",
+      "element": "mind",
+      "level": 2,
+      "mana": 26,
+      "automation": false,
+      "requires_storyline": "quiet_archive",
+      "effect": {
+        "crit_mode_buff": {
+          "charge": {
+            "crit_charge_gain": 1,
+            "duration": 3
+          },
+          "random": {
+            "crit_chance_multiplier": 0.5,
+            "duration": 3
+          }
+        }
+      },
+      "description": "Sharpen attention around decisive openings."
+    },
+    {
+      "id": "index_pulse",
+      "name": "Index Pulse",
+      "element": "mind",
+      "level": 3,
+      "mana": 48,
+      "automation": true,
+      "requires_storyline": "quiet_archive",
+      "effect": {
+        "element_xp_all": 10
+      },
+      "description": "Pulse the index engine and improve every unlocked discipline."
+    },
+    {
+      "id": "forge_burst",
+      "name": "Forge Burst",
+      "element": "ember",
+      "level": 4,
+      "mana": 34,
+      "automation": false,
+      "requires_storyline": "observatory_alignment",
+      "effect": {
+        "buff": {
+          "attack": 16,
+          "duration": 2
+        }
+      },
+      "description": "Compress heat into a short, violent burst."
+    },
+    {
+      "id": "granite_aegis",
+      "name": "Granite Aegis",
+      "element": "stone",
+      "level": 4,
+      "mana": 30,
+      "automation": false,
+      "requires_storyline": "observatory_alignment",
+      "effect": {
+        "buff": {
+          "defense": 13,
+          "duration": 2
+        }
+      },
+      "description": "Raise a heavy ward for the hardest route checks."
+    },
+    {
+      "id": "star_path",
+      "name": "Star Path",
+      "element": "gale",
+      "level": 4,
+      "mana": 36,
+      "automation": false,
+      "requires_storyline": "star_lattice",
+      "effect": {
+        "buff": {
+          "explore": 12,
+          "duration": 3
+        }
+      },
+      "description": "Navigate by a moving star map."
+    },
+    {
+      "id": "growth_surge",
+      "name": "Growth Surge",
+      "element": "vital",
+      "level": 1,
+      "mana": 24,
+      "automation": true,
+      "requires_storyline": "living_formula",
+      "effect": {
+        "resources": {
+          "herb": 4
+        },
+        "heal": 10
+      },
+      "description": "Grow useful herbs while restoring the researcher."
+    },
+    {
+      "id": "heart_guard",
+      "name": "Heart Guard",
+      "element": "vital",
+      "level": 2,
+      "mana": 30,
+      "automation": false,
+      "requires_storyline": "living_formula",
+      "effect": {
+        "buff": {
+          "defense": 14,
+          "duration": 3
+        }
+      },
+      "description": "Turn vitality into a steady defensive rhythm."
+    },
+    {
+      "id": "vital_bloom",
+      "name": "Vital Bloom",
+      "element": "vital",
+      "level": 3,
+      "mana": 44,
+      "automation": true,
+      "requires_storyline": "star_lattice",
+      "effect": {
+        "resources": {
+          "herb": 6,
+          "paper": 1
+        },
+        "heal": 20
+      },
+      "description": "Record a living bloom that renews supplies."
+    },
+    {
+      "id": "memory_spark",
+      "name": "Memory Spark",
+      "element": "mind",
+      "level": 1,
+      "mana": 20,
+      "automation": true,
+      "requires_storyline": "echoed_foundation",
+      "effect": {
+        "element_xp_all": 8,
+        "mana": 10,
+        "buff": {
+          "echo": 1,
+          "duration": 2
+        }
+      },
+      "description": "Turn remembered routes into practice for every unlocked discipline and briefly mark echo locks."
+    }
+  ],
+  "recipes": [
+    {
+      "id": "focus_lens",
+      "name": "Focus Lens",
+      "requires_storyline": "field_notes",
+      "max_owned": 3,
+      "cost": {
+        "coins": 35,
+        "ore": 6
+      },
+      "effects": {
+        "mana_rate": 1,
+        "max_mana": 20
+      },
+      "description": "A simple lens that improves passive mana collection."
+    },
+    {
+      "id": "guard_charm",
+      "name": "Guard Charm",
+      "requires_storyline": "field_notes",
+      "max_owned": 2,
+      "cost": {
+        "coins": 45,
+        "ore": 4,
+        "herb": 2
+      },
+      "effects": {
+        "defense": 4,
+        "max_hp": 10
+      },
+      "description": "A charm that steadies the researcher in combat."
+    },
+    {
+      "id": "ember_rod",
+      "name": "Ember Rod",
+      "requires_storyline": "field_notes",
+      "max_owned": 2,
+      "cost": {
+        "coins": 55,
+        "ore": 5,
+        "crystal": 1
+      },
+      "effects": {
+        "attack": 5
+      },
+      "description": "A rod that turns stored heat into a sharper strike."
+    },
+    {
+      "id": "index_engine",
+      "name": "Index Engine",
+      "requires_storyline": "quiet_archive",
+      "max_owned": 1,
+      "cost": {
+        "coins": 120,
+        "paper": 12,
+        "crystal": 4
+      },
+      "effects": {
+        "study_multiplier": 0.25,
+        "automation_bonus": 0.25
+      },
+      "description": "A note-sorting engine that improves study and automation."
+    },
+    {
+      "id": "seer_glass",
+      "name": "Seer Glass",
+      "requires_storyline": "quiet_archive",
+      "max_owned": 1,
+      "cost": {
+        "coins": 140,
+        "paper": 8,
+        "crystal": 2
+      },
+      "effects": {
+        "crit_chance": 0.2
+      },
+      "description": "A focusing glass that sharpens decisive strikes."
+    },
+    {
+      "id": "relic_frame",
+      "name": "Relic Frame",
+      "requires_storyline": "gear_sanctum",
+      "max_owned": 1,
+      "cost": {
+        "coins": 250,
+        "crystal": 8,
+        "relic_shard": 2
+      },
+      "effects": {
+        "attack": 8,
+        "defense": 8,
+        "max_mana": 50
+      },
+      "description": "A late-run frame that stabilizes volatile relic shards."
+    },
+    {
+      "id": "memory_tablet",
+      "name": "Memory Tablet",
+      "requires_storyline": "quiet_archive",
+      "max_owned": 2,
+      "cost": {
+        "coins": 160,
+        "paper": 10,
+        "crystal": 3
+      },
+      "effects": {
+        "study_multiplier": 0.2,
+        "max_mana": 25
+      },
+      "description": "A durable tablet that keeps study patterns from decaying."
+    },
+    {
+      "id": "prism_compass",
+      "name": "Prism Compass",
+      "requires_storyline": "observatory_alignment",
+      "max_owned": 1,
+      "cost": {
+        "coins": 220,
+        "paper": 8,
+        "crystal": 6,
+        "relic_shard": 1
+      },
+      "effects": {
+        "attack": 6,
+        "mana_rate": 2
+      },
+      "description": "A compass that refracts intent into sharper routes."
+    },
+    {
+      "id": "living_core",
+      "name": "Living Core",
+      "requires_storyline": "living_formula",
+      "max_owned": 1,
+      "cost": {
+        "coins": 240,
+        "herb": 14,
+        "crystal": 6,
+        "relic_shard": 2
+      },
+      "effects": {
+        "defense": 8,
+        "max_hp": 30,
+        "automation_bonus": 0.15
+      },
+      "description": "A core that lets assistant routines recover from strain."
+    },
+    {
+      "id": "astral_array",
+      "name": "Astral Array",
+      "requires_storyline": "star_lattice",
+      "max_owned": 1,
+      "cost": {
+        "coins": 420,
+        "paper": 16,
+        "crystal": 12,
+        "relic_shard": 5
+      },
+      "effects": {
+        "attack": 12,
+        "defense": 12,
+        "max_mana": 80,
+        "study_multiplier": 0.25
+      },
+      "description": "A late-game array for synchronizing every route and ritual."
+    },
+    {
+      "id": "echo_anchor",
+      "name": "Echo Anchor",
+      "requires_storyline": "echo_vault_attuned",
+      "max_owned": 1,
+      "cost": {
+        "coins": 250,
+        "paper": 8,
+        "crystal": 5,
+        "relic_shard": 2
+      },
+      "effects": {
+        "max_mana": 60,
+        "study_multiplier": 0.25,
+        "automation_bonus": 0.15
+      },
+      "description": "An anchor that lets the second run keep its rhythm."
+    }
+  ],
+  "areas": [
+    {
+      "id": "training_yard",
+      "name": "Training Yard",
+      "requires_attack": 10,
+      "requires_defense": 6,
+      "clears_required": 2,
+      "rewards": {
+        "coins": 25,
+        "ore": 2
+      },
+      "unlock_areas": ["shaded_grove"],
+      "description": "A controlled route with animated targets and simple hazards."
+    },
+    {
+      "id": "shaded_grove",
+      "name": "Shaded Grove",
+      "requires_attack": 17,
+      "requires_defense": 12,
+      "clears_required": 3,
+      "rewards": {
+        "coins": 45,
+        "herb": 3,
+        "paper": 1
+      },
+      "unlock_areas": ["sunken_stacks"],
+      "description": "A damp woodland where field notes keep changing."
+    },
+    {
+      "id": "sunken_stacks",
+      "name": "Sunken Stacks",
+      "requires_attack": 25,
+      "requires_defense": 18,
+      "clears_required": 3,
+      "rewards": {
+        "coins": 80,
+        "paper": 3,
+        "crystal": 2
+      },
+      "unlock_areas": ["gear_sanctum"],
+      "description": "A flooded archive with useful crystals and hostile catalogues."
+    },
+    {
+      "id": "gear_sanctum",
+      "name": "Gear Sanctum",
+      "requires_attack": 38,
+      "requires_defense": 28,
+      "clears_required": 4,
+      "rewards": {
+        "coins": 150,
+        "crystal": 4,
+        "relic_shard": 1
+      },
+      "unlock_areas": [],
+      "boss": {
+        "name": "Clockwork Warden",
+        "mechanics": [
+          {
+            "id": "clockwork_plating",
+            "name": "Clockwork Plating",
+            "hint": "Its plates shrug off unfocused attacks.",
+            "damage": 6,
+            "counters": [
+              {
+                "text": "active Fire Lance or Forge Burst",
+                "active_buffs_any": ["fire_lance", "forge_burst"]
+              },
+              {
+                "text": "own an Ember Rod",
+                "equipment_any": ["ember_rod"]
+              }
+            ]
+          },
+          {
+            "id": "rotating_lock",
+            "name": "Rotating Lock",
+            "hint": "The arena reorders unless the route is indexed.",
+            "damage": 4,
+            "counters": [
+              {
+                "text": "active Route Sketch",
+                "active_buffs_any": ["route_sketch"]
+              },
+              {
+                "text": "own an Index Engine or Memory Tablet",
+                "equipment_any": ["index_engine", "memory_tablet"]
+              }
+            ]
+          }
+        ]
+      },
+      "description": "A clockwork chamber that tests both combat strength and preparation."
+    },
+    {
+      "id": "prism_observatory",
+      "name": "Prism Observatory",
+      "requires_attack": 52,
+      "requires_defense": 38,
+      "clears_required": 3,
+      "rewards": {
+        "coins": 220,
+        "paper": 4,
+        "crystal": 5,
+        "relic_shard": 2
+      },
+      "unlock_areas": [],
+      "boss": {
+        "name": "Prism Warden",
+        "mechanics": [
+          {
+            "id": "split_focus",
+            "name": "Split Focus",
+            "hint": "The arena divides unsafe routes into false copies.",
+            "damage": 5,
+            "counters": [
+              {
+                "text": "own a Prism Compass",
+                "equipment_any": ["prism_compass"]
+              },
+              {
+                "text": "active Route Sketch or Star Path",
+                "active_buffs_any": ["route_sketch", "star_path"]
+              }
+            ]
+          },
+          {
+            "id": "glass_barrage",
+            "name": "Glass Barrage",
+            "hint": "Reflected shards punish light defenses.",
+            "damage": 6,
+            "counters": [
+              {
+                "text": "active Granite Aegis",
+                "active_buffs_any": ["granite_aegis"]
+              },
+              {
+                "text": "own a Relic Frame",
+                "equipment_any": ["relic_frame"]
+              }
+            ]
+          }
+        ]
+      },
+      "description": "An observatory that splits every choice into several possible routes."
+    },
+    {
+      "id": "living_conduit",
+      "name": "Living Conduit",
+      "requires_attack": 64,
+      "requires_defense": 52,
+      "clears_required": 3,
+      "rewards": {
+        "coins": 260,
+        "herb": 8,
+        "crystal": 4,
+        "relic_shard": 2
+      },
+      "unlock_areas": [],
+      "boss": {
+        "name": "Living Coil",
+        "mechanics": [
+          {
+            "id": "regrowth_loop",
+            "name": "Regrowth Loop",
+            "hint": "The conduit heals through slow pressure.",
+            "damage": 6,
+            "counters": [
+              {
+                "text": "active Forge Burst",
+                "active_buffs_any": ["forge_burst"]
+              },
+              {
+                "text": "own a Prism Compass",
+                "equipment_any": ["prism_compass"]
+              }
+            ]
+          },
+          {
+            "id": "pulse_pressure",
+            "name": "Pulse Pressure",
+            "hint": "Living walls squeeze routes that lack a steady guard.",
+            "damage": 6,
+            "counters": [
+              {
+                "text": "active Heart Guard",
+                "active_buffs_any": ["heart_guard"]
+              },
+              {
+                "text": "own a Living Core",
+                "equipment_any": ["living_core"]
+              }
+            ]
+          }
+        ]
+      },
+      "description": "A living canal where failed preparation is quickly punished."
+    },
+    {
+      "id": "astral_foundry",
+      "name": "Astral Foundry",
+      "requires_attack": 78,
+      "requires_defense": 68,
+      "clears_required": 4,
+      "rewards": {
+        "coins": 420,
+        "paper": 6,
+        "crystal": 8,
+        "relic_shard": 4
+      },
+      "unlock_areas": [],
+      "boss": {
+        "name": "Astral Forgewright",
+        "mechanics": [
+          {
+            "id": "star_alignment",
+            "name": "Star Alignment",
+            "hint": "The foundry only opens on a mapped star path.",
+            "damage": 7,
+            "counters": [
+              {
+                "text": "active Star Path",
+                "active_buffs_any": ["star_path"]
+              },
+              {
+                "text": "own an Astral Array",
+                "equipment_any": ["astral_array"]
+              }
+            ]
+          },
+          {
+            "id": "gravity_press",
+            "name": "Gravity Press",
+            "hint": "The final press needs a living guard or a full array.",
+            "damage": 7,
+            "counters": [
+              {
+                "text": "active Heart Guard",
+                "active_buffs_any": ["heart_guard"]
+              },
+              {
+                "text": "own an Astral Array",
+                "equipment_any": ["astral_array"]
+              }
+            ]
+          }
+        ]
+      },
+      "description": "A foundry that turns complete route mastery into permanent insight."
+    },
+    {
+      "id": "echo_vault",
+      "name": "Echo Vault",
+      "requires_attack": 42,
+      "requires_defense": 32,
+      "clears_required": 2,
+      "rewards": {
+        "coins": 200,
+        "paper": 5,
+        "crystal": 4,
+        "relic_shard": 1
+      },
+      "unlock_areas": [],
+      "boss": {
+        "name": "Echo Lock",
+        "mechanics": [
+          {
+            "id": "remembered_key",
+            "name": "Remembered Key",
+            "hint": "The vault opens to a recent memory spark or deep insight.",
+            "damage": 4,
+            "counters": [
+              {
+                "text": "active Memory Spark",
+                "active_buffs_any": ["memory_spark"]
+              },
+              {
+                "text": "carry at least 12 insight",
+                "min_insight": 12
+              }
+            ]
+          },
+          {
+            "id": "echo_map",
+            "name": "Echo Map",
+            "hint": "The second chamber repeats the route unless it is sketched.",
+            "damage": 4,
+            "counters": [
+              {
+                "text": "active Route Sketch",
+                "active_buffs_any": ["route_sketch"]
+              },
+              {
+                "text": "own an Echo Anchor",
+                "equipment_any": ["echo_anchor"]
+              }
+            ]
+          }
+        ]
+      },
+      "description": "A second-run vault that only answers researchers carrying insight."
+    }
+  ],
+  "storylines": [
+    {
+      "id": "first_syllabus",
+      "name": "First Syllabus",
+      "conditions": {
+        "total_element_levels": 7
+      },
+      "rewards": {
+        "permanent_bonuses": {
+          "max_mana": 20
+        },
+        "wizards": 1
+      },
+      "description": "Your early notes become good enough for an assistant to follow."
+    },
+    {
+      "id": "field_notes",
+      "name": "Field Notes",
+      "conditions": {
+        "area_clears": {
+          "training_yard": 1
+        }
+      },
+      "rewards": {
+        "unlock_recipes": ["focus_lens", "guard_charm", "ember_rod"],
+        "unlock_areas": ["shaded_grove"]
+      },
+      "description": "Exploration notes reveal a repeatable transmutation method."
+    },
+    {
+      "id": "fourfold_channel",
+      "name": "Fourfold Channel",
+      "conditions": {
+        "all_initial_elements_level": 3
+      },
+      "rewards": {
+        "unlock_spells": ["braid_channel"],
+        "permanent_bonuses": {
+          "mana_rate": 1
+        }
+      },
+      "description": "The four basic elements can now be trained as a woven routine."
+    },
+    {
+      "id": "assistant_circle",
+      "name": "Assistant Circle",
+      "conditions": {
+        "wizards": 3
+      },
+      "rewards": {
+        "permanent_bonuses": {
+          "automation_bonus": 0.2
+        }
+      },
+      "description": "Your assistants learn to coordinate without constant supervision."
+    },
+    {
+      "id": "quiet_archive",
+      "name": "Quiet Archive",
+      "conditions": {
+        "area_clears": {
+          "sunken_stacks": 1
+        }
+      },
+      "rewards": {
+        "unlock_elements": ["mind"],
+        "unlock_recipes": ["index_engine", "seer_glass"],
+        "unlock_spells": ["mind_sort"]
+      },
+      "description": "The archive teaches a new discipline: magic as organization."
+    },
+    {
+      "id": "second_life",
+      "name": "Second Life",
+      "conditions": {
+        "area_clears": {
+          "shaded_grove": 1
+        },
+        "total_element_levels": 14
+      },
+      "rewards": {
+        "unlock_retirement": true
+      },
+      "description": "You can now retire a run and keep insight for faster future progress."
+    },
+    {
+      "id": "gear_sanctum",
+      "name": "Gear Sanctum",
+      "conditions": {
+        "area_clears": {
+          "gear_sanctum": 1
+        }
+      },
+      "rewards": {
+        "unlock_recipes": ["relic_frame"],
+        "permanent_bonuses": {
+          "attack": 4,
+          "defense": 4
+        }
+      },
+      "description": "A clockwork victory unlocks stable relic framing."
+    },
+    {
+      "id": "observatory_alignment",
+      "name": "Observatory Alignment",
+      "conditions": {
+        "area_clears": {
+          "gear_sanctum": 1
+        }
+      },
+      "rewards": {
+        "unlock_areas": ["prism_observatory"],
+        "unlock_recipes": ["prism_compass"],
+        "unlock_spells": ["forge_burst", "granite_aegis"],
+        "permanent_bonuses": {
+          "max_mana": 40
+        }
+      },
+      "description": "The sanctum's clockwork lens reveals a prism observatory above the lab."
+    },
+    {
+      "id": "living_formula",
+      "name": "Living Formula",
+      "conditions": {
+        "area_clears": {
+          "prism_observatory": 1
+        }
+      },
+      "rewards": {
+        "unlock_areas": ["living_conduit"],
+        "unlock_elements": ["vital"],
+        "unlock_recipes": ["living_core"],
+        "unlock_spells": ["growth_surge", "heart_guard"],
+        "permanent_bonuses": {
+          "max_hp": 20
+        }
+      },
+      "description": "Prism notes reveal the living formula behind durable magic."
+    },
+    {
+      "id": "star_lattice",
+      "name": "Star Lattice",
+      "conditions": {
+        "area_clears": {
+          "living_conduit": 1
+        }
+      },
+      "rewards": {
+        "unlock_areas": ["astral_foundry"],
+        "unlock_recipes": ["astral_array"],
+        "unlock_spells": ["star_path", "vital_bloom"],
+        "permanent_bonuses": {
+          "mana_rate": 2
+        }
+      },
+      "description": "The living conduit maps itself into a lattice of stars."
+    },
+    {
+      "id": "astral_capstone",
+      "name": "Astral Capstone",
+      "conditions": {
+        "area_clears": {
+          "astral_foundry": 1
+        }
+      },
+      "rewards": {
+        "wizards": 2,
+        "permanent_bonuses": {
+          "attack": 8,
+          "defense": 8,
+          "study_multiplier": 0.3,
+          "automation_bonus": 0.2
+        }
+      },
+      "description": "A full astral run becomes a durable benchmark milestone."
+    },
+    {
+      "id": "echoed_foundation",
+      "name": "Echoed Foundation",
+      "conditions": {
+        "storylines": ["astral_capstone"],
+        "retirements": 1,
+        "insight": 10
+      },
+      "rewards": {
+        "unlock_areas": ["echo_vault"],
+        "unlock_spells": ["memory_spark"],
+        "permanent_bonuses": {
+          "max_mana": 20
+        }
+      },
+      "description": "The next run remembers enough of the first to reveal an echo beneath the lab."
+    },
+    {
+      "id": "echo_vault_attuned",
+      "name": "Echo Vault Attuned",
+      "conditions": {
+        "area_clears": {
+          "echo_vault": 1
+        }
+      },
+      "rewards": {
+        "unlock_recipes": ["echo_anchor"],
+        "permanent_bonuses": {
+          "mana_rate": 1,
+          "study_multiplier": 0.1
+        }
+      },
+      "description": "A second-run victory turns remembered routes into a stable anchor."
+    }
+  ]
+}

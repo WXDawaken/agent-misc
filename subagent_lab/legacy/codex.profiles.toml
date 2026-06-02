@@ -1,0 +1,45 @@
+# Repo-local runtime profile catalog for Codex multi-agent orchestration.
+# This file is intentionally separate from codex.multiagent.toml so model and
+# reasoning presets can evolve independently from workflow structure.
+
+version = 1
+
+[metadata]
+name = "codex-runtime-profiles"
+mode = "repo-local-template"
+note = "Referenced by codex.multiagent.toml. Do not replace ~/.codex/config.toml with this file."
+
+[runtime_profiles.monitor_balanced]
+preferred_model_family = "gpt-5.4"
+preferred_model_tier = "compact"
+model_reasoning_effort = "medium"
+selection_bias = "latency"
+reason = "The management interface should stay responsive and concise."
+
+[runtime_profiles.explorer_analysis]
+preferred_model_family = "gpt-5.4"
+preferred_model_tier = "full"
+model_reasoning_effort = "medium"
+selection_bias = "quality"
+reason = "Problem framing benefits from broader synthesis and stronger exploratory reasoning."
+
+[runtime_profiles.worker_build]
+preferred_model_family = "gpt-5.3-codex"
+preferred_model_tier = "full"
+model_reasoning_effort = "medium"
+selection_bias = "balanced"
+reason = "Implementation needs strong code reasoning without paying audit-level cost by default."
+
+[runtime_profiles.reviewer_critical]
+preferred_model_family = "gpt-5.4"
+preferred_model_tier = "full"
+model_reasoning_effort = "high"
+selection_bias = "quality"
+reason = "Review should favor adversarial checking, defect discovery, and skepticism."
+
+[runtime_profiles.supervisor_audit]
+preferred_model_family = "gpt-5.4"
+preferred_model_tier = "full"
+model_reasoning_effort = "medium"
+selection_bias = "quality"
+reason = "Health auditing and gate decisions need maximum evidence scrutiny."

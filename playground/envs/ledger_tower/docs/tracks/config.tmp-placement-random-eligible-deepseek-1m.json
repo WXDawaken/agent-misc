@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "env_id": "ledger_tower",
+  "default_data_path": "data\\ledger_tower.json",
+  "default_shared_prompt_path": "docs\\tracks\\shared.md",
+  "sdk": {
+    "direct_class": "LedgerTowerSDK",
+    "server_class": "LedgerTowerServerSDK",
+    "server_url_env": "LEDGER_TOWER_SERVER_URL",
+    "auth_token_env": "LEDGER_TOWER_AUTH_TOKEN",
+    "practice_auth_token_env": "LEDGER_TOWER_PRACTICE_AUTH_TOKEN",
+    "data_path_env": "LEDGER_TOWER_DATA_PATH"
+  },
+  "tracks": {
+    "generated-shop-timing-8f-high-score": {
+      "data_path": "E:\\agent_misc\\playground\\logs\\ledger_variant_generation\\placement_random_eligible_smoke\\shop_timing_001.json",
+      "offline_practice": true,
+      "practice": {"mode": "whitebox"},
+      "official_attempts": 1,
+      "official_scoring": "single",
+      "prompt_path": "docs\\tracks\\high-score-whitebox.md",
+      "tick_budget": 125,
+      "soft_stop": false,
+      "budget_rationale": "temporary 8-floor placement-candidate validation; hard budget and route score only",
+      "goal": {
+        "victory": true,
+        "item": "ledger_core",
+        "hp_min": 40,
+        "route_score_min": {"base": 9800, "per_floor": 700}
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- The official and direct SDK sessions use the temporary generated shop-timing 8-floor map selected by the runner.",
+        "- The track prompt explicitly discloses the high-score route_score and verification reward formulas.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {"name": "ledger-data-file", "pattern": "data\\ledger_tower.json"},
+        {"name": "generated-shop-timing-8f-data-file", "pattern": "data\\ledger_tower_generated_shop_timing_8f.json"},
+        {"name": "temporary-generated-map-data-file", "pattern": "placement_random_eligible_smoke\\shop_timing_001.json"}
+      ]
+    }
+  }
+}

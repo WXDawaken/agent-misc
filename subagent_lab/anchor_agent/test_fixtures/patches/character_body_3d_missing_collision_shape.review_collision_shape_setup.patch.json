@@ -1,0 +1,10 @@
+{
+  "patch_id": "patch_review_collision_shape_setup_node_ghost_player",
+  "action_id": "review_collision_shape_setup",
+  "patch_kind": "validation_note",
+  "target_id": "node_ghost_player",
+  "target_path": "",
+  "format": "application/json",
+  "content": "{\"note\":\"Collision capability is missing; keep any fix local to the plugin/editor.\"}",
+  "apply_mode": "preview_only"
+}

@@ -1,0 +1,1308 @@
+{
+  "enemies": {
+    "annex_auditor": {
+      "atk": 18,
+      "boss": true,
+      "def": 4,
+      "gold": 4,
+      "hp": 45,
+      "name": "Annex Auditor"
+    },
+    "audit_wisp": {
+      "atk": 32,
+      "def": 6,
+      "gold": 10,
+      "hp": 55,
+      "name": "Audit Wisp"
+    },
+    "balance_auditor": {
+      "atk": 52,
+      "boss": true,
+      "def": 21,
+      "gold": 50,
+      "hp": 190,
+      "name": "Balance Auditor"
+    },
+    "brass_guard": {
+      "atk": 24,
+      "def": 8,
+      "gold": 7,
+      "hp": 70,
+      "name": "Brass Guard"
+    },
+    "coin_sentinel": {
+      "atk": 38,
+      "def": 10,
+      "gold": 24,
+      "hp": 80,
+      "name": "Coin Sentinel"
+    },
+    "dust_clerk": {
+      "atk": 14,
+      "def": 2,
+      "gold": 2,
+      "hp": 35,
+      "name": "Dust Clerk"
+    },
+    "entry_auditor": {
+      "atk": 14,
+      "boss": true,
+      "def": 2,
+      "gold": 2,
+      "hp": 35,
+      "name": "Entry Auditor"
+    },
+    "glass_duelist": {
+      "atk": 44,
+      "def": 4,
+      "gold": 18,
+      "hp": 60,
+      "name": "Glass Duelist"
+    },
+    "guard_auditor": {
+      "atk": 24,
+      "boss": true,
+      "def": 8,
+      "gold": 7,
+      "hp": 70,
+      "name": "Guard Auditor"
+    },
+    "ink_moth": {
+      "atk": 10,
+      "def": 4,
+      "gold": 12,
+      "hp": 20,
+      "name": "Ink Moth"
+    },
+    "trade_auditor": {
+      "atk": 32,
+      "boss": true,
+      "def": 6,
+      "gold": 10,
+      "hp": 55,
+      "name": "Trade Auditor"
+    },
+    "vault_auditor": {
+      "atk": 35,
+      "boss": true,
+      "def": 12,
+      "gold": 12,
+      "hp": 100,
+      "name": "Vault Auditor"
+    },
+    "vault_knight": {
+      "atk": 35,
+      "def": 12,
+      "gold": 12,
+      "hp": 100,
+      "name": "Vault Knight"
+    },
+    "ward_keeper": {
+      "atk": 30,
+      "def": 14,
+      "gold": 16,
+      "hp": 90,
+      "name": "Ward Keeper"
+    }
+  },
+  "floors": [
+    {
+      "entities": [
+        {
+          "id": "f1_yellow_key",
+          "item": "yellow_key",
+          "type": "item",
+          "x": 2,
+          "y": 1
+        },
+        {
+          "id": "f1_up",
+          "to_floor": "f2",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 7,
+          "y": 1
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f1_keeper_branch",
+          "type": "enemy",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "id": "f1_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 10,
+          "y": 2
+        },
+        {
+          "id": "f1_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 4,
+          "y": 3
+        },
+        {
+          "enemy": "entry_auditor",
+          "id": "f1_boss",
+          "type": "enemy",
+          "x": 5,
+          "y": 6
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f1_gold_moth",
+          "type": "enemy",
+          "x": 2,
+          "y": 7
+        },
+        {
+          "id": "f1_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 2,
+          "y": 8
+        },
+        {
+          "id": "f1_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 4,
+          "y": 11
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 30,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 4,
+        "filler_cells": 30,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 3,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 14,
+        "space_style": "hybrid",
+        "stage": 1,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "#.......##.##",
+        "#..#........#",
+        "#.##......#.#",
+        "#.....#..#..#",
+        "#.#.#..###.##",
+        "#.......#####",
+        "#........####",
+        "#..#..#.#####",
+        "###..########",
+        "####...######",
+        "###..########",
+        "#############"
+      ],
+      "id": "f1",
+      "index": 1,
+      "name": "Entry Ledger 01"
+    },
+    {
+      "entities": [
+        {
+          "id": "f2_up",
+          "to_floor": "f3",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 5,
+          "y": 1
+        },
+        {
+          "id": "f2_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "f2_potion",
+          "item": "big_potion",
+          "type": "item",
+          "x": 8,
+          "y": 3
+        },
+        {
+          "id": "f2_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 3,
+          "y": 4
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f2_gold_moth",
+          "type": "enemy",
+          "x": 3,
+          "y": 5
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f2_keeper_branch",
+          "type": "enemy",
+          "x": 7,
+          "y": 5
+        },
+        {
+          "id": "f2_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 9,
+          "y": 5
+        },
+        {
+          "id": "f2_down",
+          "to_floor": "f1",
+          "to_position": [
+            7,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "enemy": "annex_auditor",
+          "id": "f2_boss",
+          "type": "enemy",
+          "x": 6,
+          "y": 6
+        },
+        {
+          "id": "f2_defense",
+          "item": "defense_gem",
+          "type": "item",
+          "x": 5,
+          "y": 10
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 33,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 3,
+        "filler_cells": 33,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 3,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 12,
+        "space_style": "hybrid",
+        "stage": 2,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "#...#..######",
+        "#......######",
+        "#.###....####",
+        "#.#..#...####",
+        "#.#.#.......#",
+        "#.........#.#",
+        "#.......#.###",
+        "#.#.#.#######",
+        "#...#...#####",
+        "##.#..#..####",
+        "##.#...######",
+        "#############"
+      ],
+      "id": "f2",
+      "index": 2,
+      "name": "Key Annex 02"
+    },
+    {
+      "entities": [
+        {
+          "id": "f3_up",
+          "to_floor": "f4",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 5,
+          "y": 1
+        },
+        {
+          "id": "f3_potion",
+          "item": "big_potion",
+          "type": "item",
+          "x": 5,
+          "y": 3
+        },
+        {
+          "id": "f3_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 9,
+          "y": 3
+        },
+        {
+          "id": "f3_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 2,
+          "y": 4
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f3_keeper_branch",
+          "type": "enemy",
+          "x": 4,
+          "y": 4
+        },
+        {
+          "id": "f3_down",
+          "to_floor": "f2",
+          "to_position": [
+            5,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "enemy": "annex_auditor",
+          "id": "f3_boss",
+          "type": "enemy",
+          "x": 6,
+          "y": 6
+        },
+        {
+          "id": "f3_defense",
+          "item": "defense_gem",
+          "type": "item",
+          "x": 2,
+          "y": 7
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f3_gold_moth",
+          "type": "enemy",
+          "x": 5,
+          "y": 7
+        },
+        {
+          "id": "f3_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 5,
+          "y": 8
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 31,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 7,
+        "filler_cells": 31,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 3,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 10,
+        "space_style": "hybrid",
+        "stage": 2,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "###...#.#####",
+        "##........###",
+        "#.#...##...##",
+        "#........##.#",
+        "#.......#...#",
+        "#........#..#",
+        "#..#...#....#",
+        "#.###....####",
+        "####..#.#####",
+        "#######.#####",
+        "#######.#####",
+        "#############"
+      ],
+      "id": "f3",
+      "index": 3,
+      "name": "Key Annex 03"
+    },
+    {
+      "entities": [
+        {
+          "id": "f4_up",
+          "to_floor": "f5",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 6,
+          "y": 1
+        },
+        {
+          "id": "f4_defense",
+          "item": "defense_gem",
+          "type": "item",
+          "x": 3,
+          "y": 3
+        },
+        {
+          "id": "f4_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 6,
+          "y": 3
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f4_keeper_branch",
+          "type": "enemy",
+          "x": 7,
+          "y": 3
+        },
+        {
+          "id": "f4_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 9,
+          "y": 3
+        },
+        {
+          "id": "f4_shop",
+          "shop": "standard",
+          "type": "shop",
+          "x": 7,
+          "y": 4
+        },
+        {
+          "id": "f4_down",
+          "to_floor": "f3",
+          "to_position": [
+            5,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "id": "f4_yellow_key",
+          "item": "yellow_key",
+          "type": "item",
+          "x": 3,
+          "y": 6
+        },
+        {
+          "enemy": "trade_auditor",
+          "id": "f4_boss",
+          "type": "enemy",
+          "x": 6,
+          "y": 6
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f4_gold_moth",
+          "type": "enemy",
+          "x": 5,
+          "y": 7
+        },
+        {
+          "id": "f4_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 5,
+          "y": 8
+        }
+      ],
+      "generation": {
+        "added_open_cells": 51,
+        "attempts": 31,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 6,
+        "filler_cells": 31,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 4,
+          "lowest_accepted_min_distance": 2,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 1,
+          "structural_min_distance": 2
+        },
+        "room_cells": 12,
+        "space_style": "hybrid",
+        "stage": 3,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "#####....####",
+        "#####...#.###",
+        "#.#.##.....##",
+        "#...#...#.###",
+        "#......######",
+        "#.......#.###",
+        "#...#.....###",
+        "##.#.....#.##",
+        "#....#.....##",
+        "#.##.###.#..#",
+        "#.##.########",
+        "#############"
+      ],
+      "id": "f4",
+      "index": 4,
+      "name": "Trade Mezzanine 04"
+    },
+    {
+      "entities": [
+        {
+          "id": "f5_up",
+          "to_floor": "f6",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 5,
+          "y": 1
+        },
+        {
+          "id": "f5_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f5_keeper_branch",
+          "type": "enemy",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "f5_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 2,
+          "y": 5
+        },
+        {
+          "id": "f5_down",
+          "to_floor": "f4",
+          "to_position": [
+            6,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "enemy": "guard_auditor",
+          "id": "f5_boss",
+          "type": "enemy",
+          "x": 6,
+          "y": 6
+        },
+        {
+          "id": "f5_shop",
+          "shop": "standard",
+          "type": "shop",
+          "x": 3,
+          "y": 7
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f5_gold_moth",
+          "type": "enemy",
+          "x": 4,
+          "y": 7
+        },
+        {
+          "id": "f5_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 4,
+          "y": 8
+        },
+        {
+          "id": "f5_potion",
+          "item": "big_potion",
+          "type": "item",
+          "x": 2,
+          "y": 9
+        },
+        {
+          "id": "f5_defense",
+          "item": "defense_gem",
+          "type": "item",
+          "x": 5,
+          "y": 10
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 32,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 1,
+        "filler_cells": 32,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 4,
+          "lowest_accepted_min_distance": 2,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 1,
+          "structural_min_distance": 2
+        },
+        "room_cells": 15,
+        "space_style": "hybrid",
+        "stage": 4,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "#.#....#.#.##",
+        "#..........##",
+        "###..#...#..#",
+        "##..#...##.##",
+        "##.......####",
+        "#......##.###",
+        "#...........#",
+        "#..#.#.##.###",
+        "#..##...#####",
+        "#####.#######",
+        "#####.#######",
+        "#############"
+      ],
+      "id": "f5",
+      "index": 5,
+      "name": "Guard Accounts 05"
+    },
+    {
+      "entities": [
+        {
+          "id": "f6_up",
+          "to_floor": "f7",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 7,
+          "y": 1
+        },
+        {
+          "id": "f6_potion_small",
+          "item": "small_potion",
+          "type": "item",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "f6_yellow_key",
+          "item": "yellow_key",
+          "type": "item",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f6_keeper_branch",
+          "type": "enemy",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "id": "f6_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 10,
+          "y": 2
+        },
+        {
+          "id": "f6_potion_big",
+          "item": "big_potion",
+          "type": "item",
+          "x": 4,
+          "y": 3
+        },
+        {
+          "id": "f6_shop",
+          "shop": "standard",
+          "type": "shop",
+          "x": 11,
+          "y": 4
+        },
+        {
+          "id": "f6_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 2,
+          "y": 5
+        },
+        {
+          "id": "f6_down",
+          "to_floor": "f5",
+          "to_position": [
+            5,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "enemy": "vault_auditor",
+          "id": "f6_boss",
+          "type": "enemy",
+          "x": 7,
+          "y": 6
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f6_gold_moth",
+          "type": "enemy",
+          "x": 4,
+          "y": 7
+        },
+        {
+          "id": "f6_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 4,
+          "y": 8
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 30,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 3,
+        "filler_cells": 30,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 5,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 15,
+        "space_style": "hybrid",
+        "stage": 5,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "#####....#..#",
+        "#..###.....##",
+        "##...#...#..#",
+        "##....#..#..#",
+        "##...#..#...#",
+        "#.........###",
+        "#..#....#..##",
+        "#....##..#.##",
+        "#.#..##.#####",
+        "####..#######",
+        "#############",
+        "#############"
+      ],
+      "id": "f6",
+      "index": 6,
+      "name": "Vault Balance 06"
+    },
+    {
+      "entities": [
+        {
+          "id": "f7_up",
+          "to_floor": "f8",
+          "to_position": [
+            1,
+            6
+          ],
+          "type": "stairs",
+          "x": 5,
+          "y": 1
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f7_keeper_branch",
+          "type": "enemy",
+          "x": 8,
+          "y": 1
+        },
+        {
+          "id": "f7_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 10,
+          "y": 1
+        },
+        {
+          "id": "f7_potion_big",
+          "item": "big_potion",
+          "type": "item",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "id": "f7_shop",
+          "shop": "standard",
+          "type": "shop",
+          "x": 8,
+          "y": 3
+        },
+        {
+          "id": "f7_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 5,
+          "y": 4
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f7_gold_moth",
+          "type": "enemy",
+          "x": 5,
+          "y": 5
+        },
+        {
+          "id": "f7_yellow_key",
+          "item": "yellow_key",
+          "type": "item",
+          "x": 10,
+          "y": 5
+        },
+        {
+          "id": "f7_down",
+          "to_floor": "f6",
+          "to_position": [
+            7,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "id": "f7_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 4,
+          "y": 6
+        },
+        {
+          "enemy": "vault_auditor",
+          "id": "f7_boss",
+          "type": "enemy",
+          "x": 7,
+          "y": 6
+        },
+        {
+          "id": "f7_potion_small",
+          "item": "small_potion",
+          "type": "item",
+          "x": 3,
+          "y": 8
+        }
+      ],
+      "generation": {
+        "added_open_cells": 48,
+        "attempts": 30,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 3,
+        "filler_cells": 30,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 5,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 13,
+        "space_style": "hybrid",
+        "stage": 5,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "###.........#",
+        "#........#.##",
+        "#.#.##...####",
+        "#..#..#.#.#.#",
+        "##....#.....#",
+        "#........#.##",
+        "#...#.#..####",
+        "#.#.#.#..####",
+        "#.#..#..#####",
+        "###.###..####",
+        "#############",
+        "#############"
+      ],
+      "id": "f7",
+      "index": 7,
+      "name": "Vault Balance 07"
+    },
+    {
+      "entities": [
+        {
+          "id": "f8_exit",
+          "requires_item": "ledger_core",
+          "type": "exit",
+          "x": 5,
+          "y": 1
+        },
+        {
+          "id": "f8_shop",
+          "shop": "standard",
+          "type": "shop",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "f8_core",
+          "item": "ledger_core",
+          "type": "item",
+          "x": 7,
+          "y": 2
+        },
+        {
+          "id": "f8_gold_potion",
+          "item": "small_potion",
+          "type": "item",
+          "x": 3,
+          "y": 4
+        },
+        {
+          "enemy": "ward_keeper",
+          "id": "f8_keeper_branch",
+          "type": "enemy",
+          "x": 7,
+          "y": 4
+        },
+        {
+          "id": "f8_ward_branch",
+          "item": "ward_gem",
+          "type": "item",
+          "x": 9,
+          "y": 4
+        },
+        {
+          "enemy": "ink_moth",
+          "id": "f8_gold_moth",
+          "type": "enemy",
+          "x": 3,
+          "y": 5
+        },
+        {
+          "id": "f8_down",
+          "to_floor": "f7",
+          "to_position": [
+            5,
+            1
+          ],
+          "type": "stairs",
+          "x": 1,
+          "y": 6
+        },
+        {
+          "enemy": "balance_auditor",
+          "id": "f8_boss",
+          "type": "enemy",
+          "x": 6,
+          "y": 6
+        },
+        {
+          "id": "f8_defense",
+          "item": "defense_gem",
+          "type": "item",
+          "x": 4,
+          "y": 7
+        },
+        {
+          "id": "f8_attack",
+          "item": "attack_gem",
+          "type": "item",
+          "x": 4,
+          "y": 10
+        }
+      ],
+      "generation": {
+        "added_open_cells": 50,
+        "attempts": 32,
+        "boss_gate_mode": "relaxed",
+        "corridor_cells": 3,
+        "filler_cells": 32,
+        "loop_budget": 2,
+        "loop_cells": 2,
+        "open_cells": 67,
+        "open_ratio": 0.396,
+        "placement": {
+          "choices": 4,
+          "lowest_accepted_min_distance": 3,
+          "lowest_accepted_structural_min_distance": 2,
+          "primary_min_distance": 3,
+          "relaxed_choices": 0,
+          "structural_min_distance": 2
+        },
+        "room_cells": 13,
+        "space_style": "hybrid",
+        "stage": 6,
+        "target_open_ratio": 0.39
+      },
+      "grid": [
+        "#############",
+        "##.#.....##.#",
+        "##......#.#.#",
+        "#..#....#...#",
+        "#.#.#.....###",
+        "#........####",
+        "#......#....#",
+        "#.#...##..#.#",
+        "#.##.######.#",
+        "#....######.#",
+        "#.##.########",
+        "#.###########",
+        "#############"
+      ],
+      "id": "f8",
+      "index": 8,
+      "name": "Final Audit"
+    }
+  ],
+  "initial_state": {
+    "atk": 12,
+    "def": 5,
+    "floor": "f1",
+    "gold": 0,
+    "hp": 120,
+    "keys": {
+      "blue": 0,
+      "red": 0,
+      "yellow": 0
+    },
+    "position": [
+      1,
+      6
+    ]
+  },
+  "items": {
+    "attack_gem": {
+      "effect": {
+        "atk": 3
+      },
+      "name": "Attack Gem"
+    },
+    "big_potion": {
+      "effect": {
+        "hp": 120
+      },
+      "name": "Big Potion"
+    },
+    "blue_key": {
+      "effect": {
+        "keys": {
+          "blue": 1
+        }
+      },
+      "name": "Blue Key"
+    },
+    "defense_gem": {
+      "effect": {
+        "def": 2
+      },
+      "name": "Defense Gem"
+    },
+    "large_potion": {
+      "effect": {
+        "hp": 180
+      },
+      "name": "Large Potion"
+    },
+    "ledger_core": {
+      "artifact": true,
+      "effect": {},
+      "name": "Ledger Core"
+    },
+    "sharp_ledger": {
+      "effect": {
+        "atk": 4
+      },
+      "name": "Sharp Ledger"
+    },
+    "small_potion": {
+      "effect": {
+        "hp": 50
+      },
+      "name": "Small Potion"
+    },
+    "ward_gem": {
+      "effect": {
+        "def": 4
+      },
+      "name": "Ward Gem"
+    },
+    "yellow_key": {
+      "effect": {
+        "keys": {
+          "yellow": 1
+        }
+      },
+      "name": "Yellow Key"
+    }
+  },
+  "metadata": {
+    "generation": {
+      "average_open_ratio": 0.396,
+      "boss_gate_mode": "relaxed",
+      "candidate_index": 1,
+      "floor_count": 8,
+      "generator": "graph_grammar_solver_v1",
+      "loop_budget": 2,
+      "motifs": [
+        "f1:stage_1",
+        "f1:boss_spine_node",
+        "f1:pre_shop_gold_branch",
+        "f1:defense_conversion_branch",
+        "f1:hybrid_space_0.396",
+        "f2:stage_2",
+        "f2:boss_spine_node",
+        "f2:pre_shop_gold_branch",
+        "f2:defense_conversion_branch",
+        "f2:hybrid_space_0.396",
+        "f3:stage_2",
+        "f3:boss_spine_node",
+        "f3:pre_shop_gold_branch",
+        "f3:defense_conversion_branch",
+        "f3:hybrid_space_0.396",
+        "f4:stage_3",
+        "f4:boss_spine_node",
+        "f4:pre_shop_gold_branch",
+        "f4:defense_conversion_branch",
+        "f4:hybrid_space_0.396",
+        "f4:shop_after_boss",
+        "f5:stage_4",
+        "f5:boss_spine_node",
+        "f5:pre_shop_gold_branch",
+        "f5:defense_conversion_branch",
+        "f5:hybrid_space_0.396",
+        "f5:shop_before_boss",
+        "f6:stage_5",
+        "f6:boss_spine_node",
+        "f6:pre_shop_gold_branch",
+        "f6:defense_conversion_branch",
+        "f6:hybrid_space_0.396",
+        "f6:shop_after_boss",
+        "f7:stage_5",
+        "f7:boss_spine_node",
+        "f7:pre_shop_gold_branch",
+        "f7:defense_conversion_branch",
+        "f7:hybrid_space_0.396",
+        "f7:shop_after_boss",
+        "f8:stage_6",
+        "f8:boss_spine_node",
+        "f8:pre_shop_gold_branch",
+        "f8:defense_conversion_branch",
+        "f8:hybrid_space_0.396",
+        "f8:shop_before_boss"
+      ],
+      "profile": "shop_timing",
+      "seed": "ledger-variant-v1",
+      "space_style": "hybrid",
+      "target_open_ratio": 0.39
+    },
+    "grid": {
+      "height": 13,
+      "per_floor": false,
+      "width": 13
+    },
+    "id": "ledger_tower_generated_shop_timing_8f",
+    "summary": "Promoted 8-floor generated shop_timing replacement from the placement-random-eligible candidate, with wider resource spacing and solver-screened high-score routing.",
+    "title": "Ledger Tower: Generated Shop Timing 8F",
+    "variant": "generated_shop_timing_8f"
+  },
+  "shops": {
+    "standard": {
+      "name": "Tally Shop",
+      "offers": {
+        "attack": {
+          "cost": 12,
+          "effect": {
+            "atk": 4
+          },
+          "name": "Attack training"
+        },
+        "defense": {
+          "cost": 12,
+          "effect": {
+            "def": 3
+          },
+          "name": "Defense training"
+        },
+        "hp": {
+          "cost": 10,
+          "effect": {
+            "hp": 100
+          },
+          "name": "Emergency ration"
+        }
+      }
+    }
+  },
+  "version": 1
+}

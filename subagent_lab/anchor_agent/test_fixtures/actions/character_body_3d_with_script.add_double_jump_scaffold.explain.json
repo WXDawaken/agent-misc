@@ -1,0 +1,11 @@
+{
+  "action_id": "add_double_jump_scaffold",
+  "title": "Add double-jump scaffold",
+  "why": "Suggested because the selected node is already a scripted CharacterBody3D, so the jump extension can be reviewed in one local scaffold.",
+  "observed_features": [
+    "type_name=CharacterBody3D",
+    "capability=move",
+    "capability=has_script",
+    "property.attached_script_path=res://player.gd"
+  ]
+}

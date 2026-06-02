@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OrbitLens Renderer</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #f4f6f8;
+      }
+
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/node_modules/three/build/three.module.js",
+          "three/addons/": "/node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+      const scenes = new Map();
+      const loader = new GLTFLoader();
+      const canvas = document.createElement("canvas");
+      document.body.appendChild(canvas);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        preserveDrawingBuffer: true
+      });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      globalThis.orbitLens = {
+        async loadScene(source) {
+          const gltf = await parseGltf(source);
+          const scene = gltf.scene || new THREE.Scene();
+          scene.name = scene.name || source.name || source.sceneId;
+          prepareMeshGeometry(scene);
+          scene.updateMatrixWorld(true);
+
+          const objectById = new Map();
+          let ordinal = 0;
+          scene.userData.orbitLensId = `${source.sceneId}:root`;
+          objectById.set(scene.userData.orbitLensId, scene);
+          scene.traverse((object) => {
+            if (object === scene) {
+              return;
+            }
+            object.userData.orbitLensId = `${source.sceneId}:object:${ordinal++}`;
+            objectById.set(object.userData.orbitLensId, object);
+          });
+
+          scenes.set(source.sceneId, {
+            sceneId: source.sceneId,
+            rootObjectId: scene.userData.orbitLensId,
+            scene,
+            objectById,
+            warnings: []
+          });
+
+          const summary = summarizeScene(scenes.get(source.sceneId));
+          return {
+            sceneId: source.sceneId,
+            rootObjectId: scene.userData.orbitLensId,
+            units: "scene",
+            bounds: summary.bounds,
+            warnings: summary.warnings
+          };
+        },
+
+        async sceneSummary({ sceneId }) {
+          return summarizeScene(getRecord(sceneId));
+        },
+
+        async renderView(request) {
+          const record = getRecord(request.sceneId);
+          const width = request.width || 800;
+          const height = request.height || 600;
+          renderer.setSize(width, height, false);
+          renderer.setPixelRatio(1);
+
+          const scene = record.scene;
+          scene.background = request.transparentBackground ? null : new THREE.Color(0xf4f6f8);
+          const camera = cameraFromRequest(request.camera, width, height);
+
+          const helpers = addHelpers(scene, request);
+          const visibleObjects = collectVisibleMeshIds(record);
+          let warnings = [];
+
+          try {
+            await withRenderPass(record, request.pass, request.camera, async () => {
+              renderer.render(scene, camera);
+            });
+          } catch (error) {
+            warnings = [`Render failed: ${error instanceof Error ? error.message : String(error)}`];
+          } finally {
+            for (const helper of helpers) {
+              scene.remove(helper);
+            }
+          }
+
+          return {
+            dataUrl: canvas.toDataURL("image/png"),
+            width,
+            height,
+            camera: request.camera,
+            pass: request.pass,
+            visibleObjects,
+            warnings
+          };
+        },
+
+        async pick(request) {
+          const record = getRecord(request.sceneId);
+          const camera = cameraFromRequest(request.camera, request.width, request.height);
+          const ndc = new THREE.Vector2(
+            (request.imageX / request.width) * 2 - 1,
+            -(request.imageY / request.height) * 2 + 1
+          );
+          const raycaster = new THREE.Raycaster();
+          raycaster.setFromCamera(ndc, camera);
+          const intersections = raycaster.intersectObject(record.scene, true);
+          const hit = intersections.find((intersection) => intersection.object.visible && intersection.object.userData.orbitLensId);
+          if (!hit) {
+            return {
+              hit: false,
+              warnings: []
+            };
+          }
+
+          const normal = hit.face?.normal
+            ? hit.face.normal.clone().transformDirection(hit.object.matrixWorld).normalize().toArray()
+            : undefined;
+
+          return {
+            hit: true,
+            objectId: hit.object.userData.orbitLensId,
+            point: hit.point.toArray(),
+            normal,
+            distance: hit.distance,
+            warnings: []
+          };
+        },
+
+        async setVisibility(request) {
+          const record = getRecord(request.sceneId);
+          const object = record.objectById.get(request.objectId);
+          if (!object) {
+            throw new Error(`Unknown objectId: ${request.objectId}`);
+          }
+
+          const changedObjectIds = [];
+          if (request.recursive ?? true) {
+            object.traverse((child) => {
+              child.visible = request.visible;
+              if (child.userData.orbitLensId) {
+                changedObjectIds.push(child.userData.orbitLensId);
+              }
+            });
+          } else {
+            object.visible = request.visible;
+            changedObjectIds.push(object.userData.orbitLensId);
+          }
+          record.scene.updateMatrixWorld(true);
+
+          return {
+            objectId: request.objectId,
+            visible: request.visible,
+            recursive: request.recursive ?? true,
+            changedObjectIds,
+            warnings: []
+          };
+        }
+      };
+
+      async function parseGltf(source) {
+        const data = source.format === "glb"
+          ? base64ToArrayBuffer(source.base64)
+          : source.text;
+
+        return new Promise((resolve, reject) => {
+          loader.parse(data, source.baseUrl || "", resolve, reject);
+        });
+      }
+
+      function getRecord(sceneId) {
+        const record = scenes.get(sceneId);
+        if (!record) {
+          throw new Error(`Unknown sceneId: ${sceneId}`);
+        }
+        return record;
+      }
+
+      function prepareMeshGeometry(scene) {
+        scene.traverse((object) => {
+          if (!object.isMesh || !object.geometry?.getAttribute("position")) {
+            return;
+          }
+          object.geometry.computeVertexNormals();
+          if (typeof object.geometry.normalizeNormals === "function") {
+            object.geometry.normalizeNormals();
+          }
+        });
+      }
+
+      function summarizeScene(record) {
+        record.scene.updateMatrixWorld(true);
+        const sceneBox = new THREE.Box3().setFromObject(record.scene);
+        const objects = [];
+        let triangleCount = 0;
+
+        record.scene.traverse((object) => {
+          const id = object.userData.orbitLensId;
+          if (!id) {
+            return;
+          }
+
+          const objectBox = new THREE.Box3().setFromObject(object);
+          const materialNames = materialList(object).map((material) => material.name || material.uuid);
+          if (object.isMesh && object.geometry) {
+            triangleCount += geometryTriangles(object.geometry);
+          }
+
+          const item = {
+            id,
+            name: object.name || undefined,
+            type: object.type,
+            parentId: object.parent?.userData?.orbitLensId,
+            materialNames,
+            visible: object.visible
+          };
+          if (!objectBox.isEmpty()) {
+            item.bounds = boxToBounds(objectBox);
+          }
+          objects.push(item);
+        });
+
+        return {
+          sceneId: record.sceneId,
+          objectCount: objects.length,
+          triangleCount,
+          bounds: sceneBox.isEmpty() ? emptyBounds() : boxToBounds(sceneBox),
+          objects,
+          warnings: record.warnings
+        };
+      }
+
+      function geometryTriangles(geometry) {
+        if (geometry.index) {
+          return geometry.index.count / 3;
+        }
+        const position = geometry.getAttribute("position");
+        return position ? position.count / 3 : 0;
+      }
+
+      function boxToBounds(box) {
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+        box.getSize(size);
+        box.getCenter(center);
+        return {
+          min: box.min.toArray(),
+          max: box.max.toArray(),
+          center: center.toArray(),
+          size: size.toArray()
+        };
+      }
+
+      function emptyBounds() {
+        return {
+          min: [0, 0, 0],
+          max: [0, 0, 0],
+          center: [0, 0, 0],
+          size: [0, 0, 0]
+        };
+      }
+
+      function collectVisibleMeshIds(record) {
+        const ids = [];
+        record.scene.traverse((object) => {
+          if (object.visible && object.isMesh && object.userData.orbitLensId) {
+            ids.push(object.userData.orbitLensId);
+          }
+        });
+        return ids;
+      }
+
+      function cameraFromRequest(cameraSpec, width, height) {
+        const camera = new THREE.PerspectiveCamera(
+          cameraSpec.fovDegrees,
+          width / height,
+          cameraSpec.near,
+          cameraSpec.far
+        );
+        camera.position.fromArray(cameraSpec.position);
+        camera.up.fromArray(cameraSpec.up);
+        camera.lookAt(new THREE.Vector3().fromArray(cameraSpec.target));
+        camera.updateMatrixWorld(true);
+        camera.updateProjectionMatrix();
+        return camera;
+      }
+
+      function addHelpers(scene, request) {
+        const helpers = [];
+        const bounds = new THREE.Box3().setFromObject(scene);
+        const radius = bounds.isEmpty()
+          ? 1
+          : Math.max(1, bounds.getSize(new THREE.Vector3()).length());
+        if (request.showGrid) {
+          const grid = new THREE.GridHelper(radius * 2, 10, 0x888888, 0xd6d6d6);
+          helpers.push(grid);
+          scene.add(grid);
+        }
+        if (request.showAxes) {
+          const axes = new THREE.AxesHelper(radius);
+          helpers.push(axes);
+          scene.add(axes);
+        }
+        const ambient = new THREE.AmbientLight(0xffffff, 0.85);
+        const key = new THREE.DirectionalLight(0xffffff, 1.35);
+        key.position.set(4, 6, 5);
+        helpers.push(ambient, key);
+        scene.add(ambient, key);
+        return helpers;
+      }
+
+      async function withRenderPass(record, pass, cameraSpec, render) {
+        if (pass === "rgb") {
+          await render();
+          return;
+        }
+
+        const restore = [];
+        let colorIndex = 1;
+        record.scene.traverse((object) => {
+          if (!object.isMesh) {
+            return;
+          }
+          const original = object.material;
+          restore.push([object, original]);
+          if (pass === "wireframe") {
+            object.material = new THREE.MeshBasicMaterial({
+              color: 0x111111,
+              wireframe: true
+            });
+          } else if (pass === "mask") {
+            object.material = new THREE.MeshBasicMaterial({
+              color: maskColor(colorIndex++)
+            });
+          } else if (pass === "depth") {
+            object.material = depthMaterial(cameraSpec);
+          } else if (pass === "normal") {
+            object.material = normalMaterial();
+          } else {
+            const color = materialList(object)[0]?.color || new THREE.Color(0x8aa7c7);
+            object.material = new THREE.MeshBasicMaterial({ color });
+          }
+        });
+
+        try {
+          await render();
+        } finally {
+          for (const [object, material] of restore) {
+            object.material = material;
+          }
+        }
+      }
+
+      function materialList(object) {
+        if (!object.material) {
+          return [];
+        }
+        return Array.isArray(object.material) ? object.material : [object.material];
+      }
+
+      function maskColor(index) {
+        const r = (index * 73) % 255;
+        const g = (index * 151) % 255;
+        const b = (index * 211) % 255;
+        return new THREE.Color(r / 255, g / 255, b / 255);
+      }
+
+      function depthMaterial(cameraSpec) {
+        return new THREE.ShaderMaterial({
+          uniforms: {
+            cameraNear: { value: cameraSpec.near },
+            cameraFar: { value: cameraSpec.far }
+          },
+          vertexShader: `
+            varying float vViewDepth;
+            void main() {
+              vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+              vViewDepth = -viewPosition.z;
+              gl_Position = projectionMatrix * viewPosition;
+            }
+          `,
+          fragmentShader: `
+            uniform float cameraNear;
+            uniform float cameraFar;
+            varying float vViewDepth;
+            void main() {
+              float normalizedDepth = clamp((vViewDepth - cameraNear) / max(cameraFar - cameraNear, 0.000001), 0.0, 1.0);
+              float shade = 1.0 - normalizedDepth;
+              gl_FragColor = vec4(vec3(shade), 1.0);
+            }
+          `,
+          side: THREE.DoubleSide
+        });
+      }
+
+      function normalMaterial() {
+        return new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
+      }
+
+      function base64ToArrayBuffer(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes.buffer;
+      }
+    </script>
+  </body>
+</html>

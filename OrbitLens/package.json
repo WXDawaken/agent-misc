@@ -1,0 +1,36 @@
+{
+  "name": "orbitlens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent-native 3D viewer MVP with a JSON-RPC service and Three.js renderer.",
+  "main": "dist/src/index.js",
+  "bin": {
+    "orbitlens": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"import('node:fs').then(fs => fs.rmSync('dist', { recursive: true, force: true }))\"",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "smoke": "npm run build && node dist/src/cli.js smoke --source fixtures/colored-cube.gltf"
+  },
+  "keywords": [
+    "3d",
+    "agent",
+    "viewer",
+    "threejs",
+    "json-rpc"
+  ],
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.10",
+    "playwright": "^1.60.0",
+    "pngjs": "^7.0.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/pngjs": "^6.0.5",
+    "typescript": "^6.0.3"
+  }
+}

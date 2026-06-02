@@ -1,0 +1,43 @@
+{
+  "action_id": "review_collision_shape_setup",
+  "summary": "Inspect the selected character for a missing CollisionShape3D or equivalent physics child.",
+  "risk": "low",
+  "requires_confirmation": false,
+  "steps": [
+    "Check the selected CharacterBody3D for a CollisionShape3D or CollisionPolygon3D child.",
+    "Confirm that the missing collision capability is intentional rather than an editor setup gap.",
+    "If missing by mistake, prepare a plugin-side reminder before any movement scaffolding is applied."
+  ],
+  "affected_objects": [
+    "node_ghost_player"
+  ],
+  "affected_files": [],
+  "preview_changes": [
+    "No automatic patch is proposed.",
+    "Preview highlights the missing collision capability and keeps the fix local to the editor."
+  ],
+  "preview_sections": [
+    {
+      "id": "missing_capability",
+      "title": "Missing Capability",
+      "lines": [
+        "has_collision_shape"
+      ],
+      "style": "note"
+    },
+    {
+      "id": "inspection_targets",
+      "title": "Inspection Targets",
+      "lines": [
+        "/root/Main/GhostPlayer",
+        "CollisionShape3D child",
+        "CollisionPolygon3D child"
+      ],
+      "style": "bulleted"
+    }
+  ],
+  "engine_mutations": [
+    "none: inspection preview only"
+  ],
+  "rollback_strategy": "No rollback required because this preview does not apply changes."
+}

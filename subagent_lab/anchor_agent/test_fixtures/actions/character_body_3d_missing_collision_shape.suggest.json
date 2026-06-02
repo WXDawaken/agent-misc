@@ -1,0 +1,43 @@
+[
+  {
+    "id": "validate_movement_setup",
+    "title": "Validate movement setup",
+    "intent": "validate_movement",
+    "target_ids": [
+      "node_ghost_player"
+    ],
+    "confidence": 0.91,
+    "risk": "low",
+    "requires_confirmation": false,
+    "rationale": "Start by checking the movement-facing setup before layering on additional character behavior.",
+    "preconditions": [
+      "Node type is CharacterBody3D"
+    ],
+    "tags": [
+      "movement",
+      "validation",
+      "character"
+    ]
+  },
+  {
+    "id": "review_collision_shape_setup",
+    "title": "Review collision shape setup",
+    "intent": "review_collision_shape",
+    "target_ids": [
+      "node_ghost_player"
+    ],
+    "confidence": 0.89,
+    "risk": "low",
+    "requires_confirmation": false,
+    "rationale": "The selected CharacterBody3D does not advertise a collision shape capability, so physics behavior may be incomplete or misleading.",
+    "preconditions": [
+      "Node type is CharacterBody3D",
+      "Collision shape capability is missing"
+    ],
+    "tags": [
+      "movement",
+      "physics",
+      "collision"
+    ]
+  }
+]

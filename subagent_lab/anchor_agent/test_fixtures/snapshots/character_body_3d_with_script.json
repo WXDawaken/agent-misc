@@ -1,0 +1,35 @@
+{
+  "object_id": "node_player",
+  "engine": "godot",
+  "object_kind": "node",
+  "display_name": "Player",
+  "type_name": "CharacterBody3D",
+  "path": "/root/Main/Player",
+  "scene_path": "res://levels/main.tscn",
+  "parent_id": "node_main",
+  "properties": {
+    "attached_script_path": "res://player.gd",
+    "has_script": true,
+    "has_collision_shape": true,
+    "gravity_scale": 1.0,
+    "floor_snap_length": 0.2
+  },
+  "relations": [
+    {
+      "kind": "parent",
+      "target_id": "node_main",
+      "label": "Main"
+    }
+  ],
+  "diagnostics": [],
+  "capabilities": [
+    "move",
+    "has_collision_shape",
+    "has_script",
+    "scene_editable"
+  ],
+  "selection_state": {
+    "selected": true,
+    "selection_index": 0
+  }
+}

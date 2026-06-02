@@ -1,0 +1,15 @@
+# Deterministic short run for Arcane Lab.
+status
+list spells
+study ember 4
+study stone 4
+cast shape_pebble
+tick 2
+cast fire_lance
+explore training_yard 2
+list recipes
+transmute focus_lens
+hire 1
+assign shape_pebble 1
+tick 4
+status

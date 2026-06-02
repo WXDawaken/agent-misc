@@ -1,0 +1,10 @@
+__pycache__/
+**/__pycache__/
+*.pyc
+saves/*.json
+logs/*.log
+logs/*.txt
+logs/**/*.json
+agent_workspaces/
+envs/*/saves/
+envs/*/logs/

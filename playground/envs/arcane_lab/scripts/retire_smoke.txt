@@ -1,0 +1,58 @@
+# Deterministic retirement smoke for Arcane Lab.
+# Goal: complete a long route, retire once, and verify preserved unlocks plus insight.
+cast shape_pebble
+study ember 2
+cast fire_lance
+explore training_yard 2
+transmute focus_lens
+hire 1
+assign shape_pebble 1
+study stone 2
+batch cast stone_skin@1 fire_lance@2
+explore shaded_grove 3
+batch transmute guard_charm@1 focus_lens@2
+unassign
+tick 8
+study ember 7
+study gale 2
+tick 6
+batch cast tailwind@1 stone_skin@2 fire_lance@3
+explore sunken_stacks 3
+batch transmute index_engine@1 ember_rod@2
+tick 8
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore gear_sanctum 3
+tick 6
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore gear_sanctum 1
+batch transmute relic_frame
+tick 7
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore prism_observatory 3
+
+# Prepare and clear the late route so retirement has several unlocks to preserve.
+tick 7
+cast growth_surge
+cast growth_surge
+batch transmute memory_tablet@1 living_core@2
+tick 20
+study vital 2
+study ember 10
+tick 20
+study gale 16
+tick 25
+batch cast route_sketch@1 tailwind@2 fire_lance@3 forge_burst@4 heart_guard@5
+explore living_conduit 2
+batch cast route_sketch@1 tailwind@2 fire_lance@3 forge_burst@4 heart_guard@5
+explore living_conduit 1
+tick 25
+batch cast route_sketch@1 tailwind@2 star_path@3 fire_lance@4 forge_burst@5 heart_guard@6
+explore astral_foundry 2
+tick 2
+batch cast route_sketch@1 tailwind@2 star_path@3 fire_lance@4 forge_burst@5 heart_guard@6
+explore astral_foundry 2
+
+retire
+status
+list areas
+list goals

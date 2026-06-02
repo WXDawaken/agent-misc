@@ -1,0 +1,79 @@
+# OS and editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*.pyc.*
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Node and generic build outputs
+node_modules/
+dist/
+build/
+coverage/
+
+# Local databases, logs, and tokens
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*-wal
+*-shm
+*.token
+session.token
+
+# Local Codex / agent runtime state
+/.codex/
+**/.codex_home*/
+**/.tmp*/
+**/.tmp_git_backup*/
+**/.where-history.json
+/$path
+codex-*-last.txt
+
+# Local workspace handoff docs
+**/AGENTS.md
+**/.where-agent-progress.md
+**/docs/mainline-plan.md
+/docs/github-repo-layout-plan.md
+**/docs/*handoff*.md
+**/docs/*workspace-local*.md
+**/docs/*.local.md
+
+# Co-located sibling repositories
+/mail4agent/
+
+# Deferred benchmark harness and eval run outputs
+/benchmarks/
+/deepseek_single_file_eval/agent_eval/
+/deepseek_single_file_eval/codex_cli_runs/
+/deepseek_single_file_eval/runs/
+
+# Playground runtime state
+/playground/agent_workspaces/
+/playground/logs/
+/playground/saves/*.json
+
+# Judge runtime state
+/judge_lab/.codex_home*/
+/judge_lab/logs/
+/judge_lab/last_judge_message.txt
+/judge_lab/judge_prompt_current_bundle.txt
+
+# Downloaded/generated local tools
+/tools/godot-*/
+/tools/*.sqlite
+/tools/*.sqlite3

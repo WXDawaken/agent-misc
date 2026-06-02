@@ -1,0 +1,29 @@
+{
+  "object_id": "node_prop",
+  "engine": "godot",
+  "object_kind": "node",
+  "display_name": "Prop",
+  "type_name": "Node3D",
+  "path": "/root/Main/Prop",
+  "scene_path": "res://levels/main.tscn",
+  "parent_id": "node_main",
+  "properties": {
+    "attached_script_path": "",
+    "has_script": false
+  },
+  "relations": [
+    {
+      "kind": "parent",
+      "target_id": "node_main",
+      "label": "Main"
+    }
+  ],
+  "diagnostics": [],
+  "capabilities": [
+    "scene_editable"
+  ],
+  "selection_state": {
+    "selected": true,
+    "selection_index": 0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "action_id": "validate_movement_setup",
+  "summary": "Review the selected character's movement-facing properties and script hooks.",
+  "risk": "low",
+  "requires_confirmation": false,
+  "steps": [
+    "Check whether the node exposes movement-related capabilities.",
+    "Inspect key movement properties such as floor snap and gravity scale.",
+    "Highlight any missing script hook or unexpected property combination."
+  ],
+  "affected_objects": [
+    "node_npc"
+  ],
+  "affected_files": [],
+  "preview_changes": [
+    "No direct file patch is required for the validation preview.",
+    "Preview returns a checklist-oriented assessment only."
+  ],
+  "preview_sections": [
+    {
+      "id": "inspection_scope",
+      "title": "Inspection Scope",
+      "lines": [
+        "/root/Main/NPC",
+        "Movement-related properties",
+        "Script hook availability"
+      ],
+      "style": "bulleted"
+    },
+    {
+      "id": "preview_outcome",
+      "title": "Preview Outcome",
+      "lines": [
+        "No file patch is proposed.",
+        "The plugin should present this plan as a checklist preview."
+      ],
+      "style": "note"
+    }
+  ],
+  "engine_mutations": [
+    "none: preview-only validation"
+  ],
+  "rollback_strategy": "No rollback required because the validation plan does not apply changes."
+}

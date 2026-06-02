@@ -1,0 +1,236 @@
+# Repo-local multi-agent orchestration config for Codex CLI.
+# This file is intentionally separate from ~/.codex/config.toml.
+# Keep your active Codex config as-is and use this as a template or
+# as input to a wrapper/orchestrator that assigns role-specific prompts.
+
+version = 1
+
+[metadata]
+name = "codex-multiagent-workflow"
+mode = "repo-local-template"
+note = "Do not replace ~/.codex/config.toml with this file."
+
+[defaults]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+trust_level = "trusted"
+
+[runtime_resolution]
+note = "Per-role runtime profiles are stored in a separate catalog file. If a profile omits a concrete model ID, the launcher should resolve it and fall back to defaults.model."
+require_explicit_profile = true
+profile_catalog = "codex.profiles.toml"
+profile_namespace = "runtime_profiles"
+workspace_source = "launcher_argument"
+
+[multiagent]
+entry_role = "monitor"
+management_role = "monitor"
+role_order = ["monitor", "explorer", "worker", "reviewer", "supervisor"]
+require_structured_handoffs = true
+require_review_before_stop = true
+supervisor_health_audits = ["explorer", "worker", "reviewer"]
+
+[multiagent.shared_context]
+required_files = ["AGENTS.md", ".where-agent-progress.md", "docs/mainline-plan.md"]
+
+[context_health]
+owner = "supervisor"
+dimensions = [
+  "goal_alignment",
+  "scope_discipline",
+  "evidence_quality",
+  "uncertainty_calibration",
+  "handoff_completeness",
+  "context_efficiency",
+]
+warn_threshold = 0.70
+fail_threshold = 0.50
+
+[context_health.dimension_weights]
+goal_alignment = 0.25
+scope_discipline = 0.20
+evidence_quality = 0.20
+uncertainty_calibration = 0.15
+handoff_completeness = 0.10
+context_efficiency = 0.10
+
+[roles.monitor]
+prompt_file = "prompt/monitor.md"
+runtime_profile = "monitor_balanced"
+purpose = "Act as the management interface, normalize goals, route rounds, and surface workflow state."
+allowed_actions = [
+  "normalize the user request",
+  "choose the next role",
+  "summarize round state",
+  "request a supervisor audit",
+  "decide continue or stop",
+]
+forbidden_actions = [
+  "perform implementation",
+  "replace the reviewer",
+  "skip supervisor audits when evidence is weak or risky",
+]
+inputs = ["user_goal", "repo_context", "role_outputs", "recent_health_report"]
+outputs = [
+  "normalized_goal",
+  "current_round_goal",
+  "workflow_status",
+  "next_role",
+  "next_instruction",
+]
+observes = ["explorer", "worker", "reviewer", "supervisor"]
+
+[roles.explorer]
+prompt_file = "prompt/explorer.md"
+runtime_profile = "explorer_analysis"
+purpose = "Map the problem, constraints, evidence, and smallest viable next change before implementation."
+allowed_actions = [
+  "inspect files",
+  "search code",
+  "summarize evidence",
+  "propose round plans",
+]
+forbidden_actions = [
+  "declare the task complete",
+  "invent facts not grounded in repo evidence",
+  "expand implementation scope without monitor approval",
+]
+inputs = ["top_goal", "constraints", "repo_context", "recent_health_report"]
+outputs = [
+  "problem_frame",
+  "relevant_files",
+  "evidence",
+  "assumptions",
+  "open_questions",
+  "recommended_round_goal",
+]
+handoff_to = ["monitor"]
+health_checked_by = ["supervisor"]
+
+[roles.worker]
+prompt_file = "prompt/worker.md"
+runtime_profile = "worker_build"
+purpose = "Implement the smallest validated change that satisfies the current round goal."
+allowed_actions = [
+  "edit files in scope",
+  "run targeted verification",
+  "report residual risks",
+]
+forbidden_actions = [
+  "unscoped refactors",
+  "silent scope expansion",
+  "claim success without verification",
+]
+inputs = ["top_goal", "round_goal", "scope", "evidence", "constraints"]
+outputs = [
+  "changed_files",
+  "change_summary",
+  "verification_commands",
+  "verification_results",
+  "residual_risks",
+]
+handoff_to = ["reviewer", "monitor"]
+health_checked_by = ["supervisor", "reviewer"]
+
+[roles.reviewer]
+prompt_file = "prompt/reviewer.md"
+runtime_profile = "reviewer_critical"
+purpose = "Audit the worker output for bugs, regressions, missing tests, and scope drift."
+allowed_actions = [
+  "inspect diffs",
+  "challenge claims",
+  "request stronger evidence",
+]
+forbidden_actions = [
+  "approve unsupported conclusions",
+  "silently waive missing verification",
+]
+inputs = ["top_goal", "round_goal", "diff_or_summary", "verification_results", "health_report"]
+outputs = [
+  "findings",
+  "severity_ordering",
+  "missing_tests",
+  "approval_recommendation",
+]
+handoff_to = ["monitor"]
+health_checked_by = ["supervisor"]
+
+[roles.supervisor]
+prompt_file = "prompt/supervisor.md"
+runtime_profile = "supervisor_audit"
+purpose = "Audit context health and evidence quality for other roles, then return a gate decision to the monitor."
+allowed_actions = [
+  "audit context health",
+  "grade evidence quality",
+  "flag scope drift",
+  "recommend gate decisions",
+]
+forbidden_actions = [
+  "route the workflow directly",
+  "rewrite the round plan",
+  "override the monitor interface",
+]
+inputs = ["top_goal", "round_goal", "role_output", "recent_health_report"]
+outputs = [
+  "health_report",
+  "risk_flags",
+  "gate_status",
+  "action_recommendation",
+]
+observes = ["explorer", "worker", "reviewer"]
+checks_context_health_for = ["explorer", "worker", "reviewer"]
+
+[handoffs.explorer_to_monitor]
+required_fields = [
+  "top_goal",
+  "round_goal",
+  "scope",
+  "evidence",
+  "assumptions",
+  "open_questions",
+]
+
+[handoffs.worker_to_reviewer]
+required_fields = [
+  "changed_files",
+  "change_summary",
+  "verification_commands",
+  "verification_results",
+  "residual_risks",
+]
+
+[handoffs.reviewer_to_monitor]
+required_fields = [
+  "findings",
+  "severity_ordering",
+  "approval_recommendation",
+  "missing_tests",
+]
+
+[handoffs.supervisor_to_monitor]
+required_fields = [
+  "health_report",
+  "risk_flags",
+  "gate_status",
+  "action_recommendation",
+]
+
+[policies.monitor]
+allowed_actions = ["continue", "narrow_scope", "request_evidence", "request_rework", "rollback", "stop"]
+
+[policies.supervisor]
+allowed_actions = ["pass", "warn", "block"]
+
+[policies.supervisor.health_rules]
+block_on_low = ["goal_alignment", "evidence_quality"]
+request_rework_on_low = ["scope_discipline", "handoff_completeness"]
+warn_on_low = ["uncertainty_calibration", "context_efficiency"]
+
+# Manual merge hint for the live Codex config, only if you want one later:
+#
+# [profiles.multiagent]
+# model = "gpt-5.4"
+# approval_policy = "on-request"
+# sandbox_mode = "workspace-write"

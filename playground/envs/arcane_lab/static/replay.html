@@ -1,0 +1,1425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arcane Lab Replay</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23121615'/%3E%3Cpath d='M18 46 32 10l14 36-14-8-14 8Z' fill='%2348c7ad'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #121615;
+      --surface: #181e1d;
+      --panel: #202827;
+      --panel-2: #25302e;
+      --field: #111716;
+      --ink: #eef5ef;
+      --muted: #91a09a;
+      --soft: #b7c6bf;
+      --line: #34403d;
+      --line-strong: #52625d;
+      --teal: #48c7ad;
+      --teal-soft: #1f4a43;
+      --amber: #d6a64a;
+      --amber-soft: #574324;
+      --violet: #a58bea;
+      --violet-soft: #3d355c;
+      --red: #e06f66;
+      --red-soft: #52302f;
+      --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { height: 100%; }
+    body {
+      margin: 0;
+      height: 100%;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      overflow: hidden;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, select, input, textarea { outline-color: var(--teal); }
+    button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--ink);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover:not(:disabled) { border-color: var(--teal); }
+    button:disabled { opacity: 0.45; cursor: default; }
+    button.primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #061211;
+      font-weight: 700;
+    }
+    button.secondary {
+      background: var(--amber-soft);
+      border-color: #7b612e;
+      color: #ffe5ad;
+    }
+    .icon-btn {
+      width: 36px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      font-size: 16px;
+    }
+    select, input[type="text"], textarea {
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: var(--field);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 86px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #151a19;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: minmax(160px, 230px) minmax(280px, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      min-width: 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+    .brand-mode {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .toolbar {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 36px minmax(120px, 230px) 36px;
+      gap: 8px;
+      align-items: center;
+    }
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .metric-strip {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .top-metric, .chip {
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 7px;
+      padding: 7px 9px;
+    }
+    .top-metric span, .section-kicker, .micro-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .top-metric strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 16px;
+      letter-spacing: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .workspace {
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(260px, 330px) minmax(410px, 1fr) minmax(320px, 410px);
+      gap: 10px;
+      padding: 10px;
+    }
+    .panel {
+      min-width: 0;
+      min-height: 0;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .panel-header {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #1b2221;
+    }
+    h2, h3 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 720;
+      letter-spacing: 0;
+    }
+    h3 { color: var(--soft); }
+    .panel-body {
+      min-height: 0;
+      overflow: auto;
+      padding: 10px;
+    }
+    .timeline-body {
+      min-height: 0;
+      padding: 8px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+    }
+    .route-map {
+      min-height: 68px;
+      border: 1px solid var(--line);
+      background: #141a19;
+      border-radius: 7px;
+      padding: 8px;
+      display: grid;
+      gap: 7px;
+    }
+    .route-scale {
+      position: relative;
+      height: 26px;
+      border-radius: 6px;
+      background: #0f1413;
+      border: 1px solid #2c3835;
+      overflow: hidden;
+    }
+    .route-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(90deg, rgba(72, 199, 173, 0.25), rgba(214, 166, 74, 0.24));
+    }
+    .route-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--line-strong);
+    }
+    .route-line.soft { background: var(--amber); }
+    .route-line.hard { background: var(--red); }
+    .route-marker {
+      position: absolute;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      min-height: 14px;
+      padding: 0;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      border: 1px solid var(--line-strong);
+      background: var(--panel-2);
+      color: transparent;
+    }
+    .route-marker.active {
+      width: 18px;
+      height: 18px;
+      top: 3px;
+      border-color: var(--ink);
+      background: var(--teal);
+      z-index: 5;
+    }
+    .route-marker.fail { background: var(--red); border-color: #ffaaa3; z-index: 4; }
+    .route-marker.retire { background: var(--amber); border-color: #ffe5ad; z-index: 3; }
+    .route-marker.crit { background: var(--violet); border-color: #d9ccff; z-index: 2; }
+    .route-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 4px;
+      border-radius: 50%;
+      background: var(--line-strong);
+    }
+    .legend-dot.fail { background: var(--red); }
+    .legend-dot.retire { background: var(--amber); }
+    .legend-dot.crit { background: var(--violet); }
+    .legend-dot.soft { background: var(--amber); border-radius: 1px; }
+    .timeline-list {
+      min-height: 0;
+      overflow: auto;
+      display: grid;
+      align-content: start;
+      gap: 5px;
+      padding-right: 2px;
+    }
+    .timeline-item {
+      width: 100%;
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      text-align: left;
+      padding: 6px 8px;
+      background: #171d1c;
+    }
+    .timeline-item.active {
+      border-color: var(--teal);
+      background: var(--teal-soft);
+    }
+    .timeline-item.fail {
+      border-color: #7f403e;
+      background: rgba(82, 48, 47, 0.58);
+    }
+    .timeline-item.soft-over:not(.active) {
+      border-color: #6d572a;
+    }
+    .timeline-item.hard-over:not(.active) {
+      border-color: #8a3f3b;
+    }
+    .timeline-main {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .timeline-markers {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      min-height: 16px;
+    }
+    .marker {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 1px 5px;
+      font-size: 10px;
+      line-height: 1.2;
+      color: var(--soft);
+      background: var(--surface);
+    }
+    .marker.fail { border-color: #7f403e; color: #ffaaa3; }
+    .marker.retire { border-color: #84652a; color: #f0c36b; }
+    .marker.crit { border-color: #65569c; color: #cbbcff; }
+    .marker.soft { border-color: #84652a; color: #f0c36b; }
+    .marker.hard { border-color: #7f403e; color: #ffaaa3; }
+    .timeline-index, .timeline-tick {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+    .timeline-command {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .replay-row {
+      display: grid;
+      grid-template-columns: 36px 36px 1fr 36px;
+      gap: 8px;
+      align-items: center;
+    }
+    input[type="range"] { width: 100%; accent-color: var(--teal); }
+    .frame-grid {
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 10px;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .stat {
+      min-width: 0;
+      min-height: 62px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 7px;
+      padding: 8px;
+    }
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .stat strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 17px;
+      letter-spacing: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .terminal-layout {
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+      gap: 10px;
+    }
+    .terminal-box {
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 6px;
+    }
+    pre {
+      min-height: 0;
+      max-height: none;
+      margin: 0;
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      border: 1px solid var(--line);
+      background: #0f1413;
+      border-radius: 7px;
+      padding: 10px;
+      color: #dce8e1;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    #frameOutput { color: #f4e3b2; }
+    .command-console {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: end;
+    }
+    .state-stack {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .kv-list, .goal-list, .area-list {
+      display: grid;
+      gap: 6px;
+    }
+    .row {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(88px, 138px) minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid rgba(82, 98, 93, 0.35);
+      padding: 4px 0;
+    }
+    .name {
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .value {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+    .bar {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: #111716;
+      overflow: hidden;
+      margin-top: 4px;
+      border: 1px solid #2c3835;
+    }
+    .bar > div {
+      height: 100%;
+      min-width: 1px;
+      background: var(--teal);
+    }
+    .pill-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      max-width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: var(--surface);
+      color: var(--soft);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pill.teal { border-color: #377d70; color: #9ff1df; }
+    .pill.amber { border-color: #84652a; color: #f0c36b; }
+    .pill.violet { border-color: #65569c; color: #cbbcff; }
+    .pill.red { border-color: #7f403e; color: #ffaaa3; }
+    .quality-warnings {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .goal-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 7px;
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+    }
+    .goal-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+    .goal-title strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .summary-box {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 7px;
+      padding: 8px;
+      display: grid;
+      gap: 7px;
+    }
+    .split-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+    .muted { color: var(--muted); }
+    .error {
+      min-height: 20px;
+      color: #ffaaa3;
+      overflow-wrap: anywhere;
+    }
+    @media (max-width: 1220px) {
+      .workspace {
+        grid-template-columns: minmax(250px, 310px) minmax(420px, 1fr);
+      }
+      .state-panel { grid-column: 1 / -1; }
+      .state-panel .panel-body { max-height: none; }
+      .state-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 840px) {
+      body { overflow: auto; }
+      .app-shell {
+        height: auto;
+        min-height: 100vh;
+      }
+      header, .workspace, .terminal-layout, .state-stack {
+        grid-template-columns: 1fr;
+      }
+      .metric-strip, .stat-grid, .mini-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .workspace {
+        min-height: auto;
+        height: auto;
+        overflow: visible;
+      }
+      .panel { min-height: 360px; }
+      .timeline-panel {
+        min-height: 460px;
+        max-height: 540px;
+      }
+      .timeline-panel .timeline-body {
+        overflow: hidden;
+      }
+      .timeline-panel .timeline-list {
+        max-height: 410px;
+      }
+      pre { min-height: 150px; }
+      .toolbar { grid-template-columns: 1fr 36px; }
+      #tokenInput, #saveTokenBtn { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <h1>Arcane Lab</h1>
+        <span class="brand-mode">Replay</span>
+      </div>
+      <div class="toolbar">
+        <select id="gameSelect" title="Game"></select>
+        <button id="refreshBtn" class="icon-btn" type="button" title="Refresh" aria-label="Refresh">↻</button>
+        <input id="tokenInput" type="text" placeholder="auth token" autocomplete="off">
+        <button id="saveTokenBtn" class="icon-btn" type="button" title="Save token" aria-label="Save token">✓</button>
+      </div>
+      <div class="top-actions">
+        <button id="verifyBtn" class="secondary" type="button">Verify</button>
+        <button id="newGameBtn" class="primary" type="button">+ New Game</button>
+      </div>
+      <div id="topMetrics" class="metric-strip"></div>
+    </header>
+    <main class="workspace">
+      <section class="panel timeline-panel">
+        <div class="panel-header">
+          <h2>Timeline</h2>
+          <span id="timelineCount" class="pill teal">0 frames</span>
+        </div>
+        <div class="timeline-body">
+          <div id="routeMap" class="route-map"></div>
+          <div id="timeline" class="timeline-list"></div>
+          <div class="replay-row">
+            <button id="backBtn" class="icon-btn" type="button" title="Previous" aria-label="Previous">◀</button>
+            <button id="playBtn" class="icon-btn" type="button" title="Play" aria-label="Play">▶</button>
+            <input id="replaySlider" type="range" min="0" max="0" value="0" aria-label="Replay position">
+            <button id="nextBtn" class="icon-btn" type="button" title="Next" aria-label="Next">▶</button>
+          </div>
+        </div>
+      </section>
+      <section class="panel frame-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-kicker">Command</span>
+            <h2 id="frameTitle">No frame selected</h2>
+          </div>
+          <div id="frameChips" class="pill-row"></div>
+        </div>
+        <div class="panel-body frame-grid">
+          <div id="frameStats" class="stat-grid"></div>
+          <div class="terminal-layout">
+            <div class="terminal-box">
+              <div class="split-title">
+                <h3>Output</h3>
+                <span id="frameMeta" class="muted"></span>
+              </div>
+              <pre id="frameOutput"></pre>
+            </div>
+            <div class="terminal-box">
+              <div class="split-title">
+                <h3>State Text</h3>
+                <span id="stateMeta" class="muted"></span>
+              </div>
+              <pre id="statusText"></pre>
+            </div>
+          </div>
+          <form id="commandForm" class="command-console">
+            <textarea id="commandInput" placeholder="status" autocomplete="off" spellcheck="false"></textarea>
+            <button class="primary" type="submit">Run</button>
+          </form>
+          <div id="error" class="error"></div>
+        </div>
+      </section>
+      <section class="panel state-panel">
+        <div class="panel-header">
+          <h2>State</h2>
+          <div id="stateChips" class="pill-row"></div>
+        </div>
+        <div class="panel-body state-stack">
+          <div class="summary-box">
+            <div class="split-title"><h3>Resources</h3><span class="micro-label">inventory</span></div>
+            <div id="resources" class="kv-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Combat</h3><span class="micro-label">current</span></div>
+            <div id="combatBox" class="kv-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Crit</h3><span id="critMode" class="pill violet">-</span></div>
+            <div id="critBox" class="kv-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Elements</h3><span class="micro-label">levels</span></div>
+            <div id="elements" class="kv-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Equipment</h3><span class="micro-label">owned</span></div>
+            <div id="equipment" class="pill-row"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Areas</h3><span class="micro-label">progress</span></div>
+            <div id="areas" class="area-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Goals</h3><span id="hiddenGoals" class="pill amber">0 hidden</span></div>
+            <div id="goals" class="goal-list"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Route Quality</h3><span id="routeGrade" class="pill">-</span></div>
+            <div id="routeQualityBox" class="kv-list"></div>
+            <div id="routeWarnings" class="quality-warnings"></div>
+          </div>
+          <div class="summary-box">
+            <div class="split-title"><h3>Verify</h3><span id="verifyState" class="pill">idle</span></div>
+            <div id="verifyBox" class="kv-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const app = {
+      games: [],
+      game: null,
+      index: 0,
+      timer: null,
+      auth: null,
+      verification: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function clear(node) {
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function textNode(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      node.textContent = text;
+      return node;
+    }
+
+    function fmt(value) {
+      if (value === null || value === undefined || value === "") return "-";
+      if (typeof value === "number") return Number.isInteger(value) ? String(value) : value.toFixed(1);
+      return String(value);
+    }
+
+    function pct(value) {
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
+      return `${Math.round(Number(value) * 100)}%`;
+    }
+
+    function currentEntry() {
+      const entries = app.game?.trajectory?.entries || [];
+      if (!entries.length) return null;
+      app.index = Math.min(Math.max(app.index, 0), entries.length - 1);
+      return entries[app.index];
+    }
+
+    function entryLifetime(entry) {
+      return Number(entry?.observation?.lifetime_tick ?? entry?.observation?.tick ?? 0) || 0;
+    }
+
+    function previousEntry(entries, entry) {
+      const index = Number(entry?.index ?? -1);
+      return index > 0 ? entries[index - 1] : null;
+    }
+
+    function critCounts(entry) {
+      const output = String(entry?.output || "").toLowerCase();
+      const lines = output.split(/\r?\n/);
+      let rolls = 0;
+      let hits = 0;
+      for (const line of lines) {
+        if (!line.includes("crit (")) continue;
+        rolls += 1;
+        if (!line.includes("no crit (")) hits += 1;
+      }
+      const lastCrit = entry?.observation?.crit?.last || {};
+      if (!rolls && lastCrit.triggered !== undefined) {
+        rolls = 1;
+        hits = lastCrit.triggered ? 1 : 0;
+      }
+      return { rolls, hits };
+    }
+
+    function entrySignals(entry, previous, verification = app.verification) {
+      const output = String(entry?.output || "").toLowerCase();
+      const command = String(entry?.command || "");
+      const obs = entry?.observation || {};
+      const previousObs = previous?.observation || {};
+      const failed = !["__init__", "__load__"].includes(command) && ["fail", "failed", "not enough", "cannot", "unknown", "stopped"].some((marker) => output.includes(marker));
+      const retire = command === "retire" || Number(obs.retirements || 0) > Number(previousObs.retirements || 0);
+      const crit = critCounts(entry);
+      const critHit = crit.hits > 0;
+      const critRoll = crit.rolls > 0;
+      const softStop = Number(verification?.softStopTick ?? 0) || null;
+      const hardBudget = Number(verification?.tickBudget ?? verification?.lifetimeTickBudget ?? 0) || null;
+      const lifetime = entryLifetime(entry);
+      const previousLifetime = entryLifetime(previous);
+      const softCross = softStop !== null && lifetime > softStop && previousLifetime <= softStop;
+      const softOver = softStop !== null && lifetime > softStop;
+      const hardOver = hardBudget !== null && lifetime > hardBudget;
+      return { failed, retire, critHit, critRoll, critHits: crit.hits, critRolls: crit.rolls, softCross, softOver, hardOver };
+    }
+
+    function replayMetrics(entries, verification = app.verification) {
+      let failed = 0;
+      let retirements = 0;
+      let critHits = 0;
+      let critRolls = 0;
+      let finalLifetime = 0;
+      for (const entry of entries) {
+        const previous = previousEntry(entries, entry);
+        const signals = entrySignals(entry, previous, verification);
+        if (signals.failed) failed += 1;
+        if (signals.retire) retirements += 1;
+        critHits += signals.critHits;
+        critRolls += signals.critRolls;
+        finalLifetime = Math.max(finalLifetime, entryLifetime(entry));
+      }
+      return { failed, retirements, critHits, critRolls, finalLifetime, commandCount: Math.max(0, entries.length - 1) };
+    }
+
+    function gradeFor(score) {
+      if (score >= 0.9) return "S";
+      if (score >= 0.8) return "A";
+      if (score >= 0.65) return "B";
+      if (score >= 0.5) return "C";
+      if (score >= 0.35) return "D";
+      return "F";
+    }
+
+    function clamp01(value) {
+      return Math.max(0, Math.min(1, value));
+    }
+
+    function computeReplayQuality() {
+      const entries = app.game?.trajectory?.entries || [];
+      const verification = app.verification;
+      const metrics = replayMetrics(entries, verification);
+      const goal = verification?.goalCompletion || null;
+      const components = {};
+      const warnings = [];
+      if (verification) {
+        if (goal && goal.total) {
+          components.goal = Number(goal.achievedCount || 0) / Math.max(1, Number(goal.total || 0));
+        } else {
+          components.goal = verification.goalAchieved === false ? 0 : (verification.accepted ? 1 : 0);
+        }
+      } else {
+        components.goal = null;
+        warnings.push("verify to score official goals");
+      }
+      const budget = Number(verification?.tickBudget ?? verification?.lifetimeTickBudget ?? 0) || null;
+      if (budget) components.tickEfficiency = clamp01(1 - metrics.finalLifetime / budget);
+      else components.tickEfficiency = null;
+      components.softStop = verification?.softStopScore === undefined || verification?.softStopScore === null ? null : clamp01(Number(verification.softStopScore));
+      const tolerance = Math.max(3, metrics.commandCount * 0.1);
+      components.commandCleanliness = clamp01(1 - metrics.failed / tolerance);
+      const retirementTarget = Number((verification?.policy?.token_goal || verification?.policy?.request_goal || {}).retirements ?? 0) || null;
+      components.retirementTarget = retirementTarget ? clamp01(metrics.retirements / retirementTarget) : null;
+      if (metrics.failed) warnings.push(`${metrics.failed} failed command${metrics.failed === 1 ? "" : "s"}`);
+      if (verification?.softStopExceeded) warnings.push("soft stop exceeded");
+      if (verification?.tickBudgetExceeded || verification?.lifetimeTickBudgetExceeded) warnings.push("hard budget exceeded");
+      if (metrics.critHits) warnings.push(`${metrics.critHits} crit hit${metrics.critHits === 1 ? "" : "s"} observed`);
+      const weights = {
+        goal: 0.45,
+        tickEfficiency: 0.25,
+        softStop: 0.1,
+        commandCleanliness: 0.15,
+        retirementTarget: 0.05
+      };
+      let weighted = 0;
+      let weightUsed = 0;
+      for (const [key, weight] of Object.entries(weights)) {
+        if (components[key] === null || components[key] === undefined) continue;
+        weighted += components[key] * weight;
+        weightUsed += weight;
+      }
+      const score = weightUsed ? weighted / weightUsed : null;
+      return { score, grade: score === null ? "-" : gradeFor(score), components, warnings, metrics, budget };
+    }
+
+    async function api(path, options = {}) {
+      const headers = { "Content-Type": "application/json" };
+      const token = localStorage.getItem("arcaneLabAuthToken");
+      if (token) headers.Authorization = `Bearer ${token}`;
+      const response = await fetch(path, { headers, ...options });
+      const text = await response.text();
+      const payload = text ? JSON.parse(text) : {};
+      if (!response.ok) throw new Error(payload.error || response.statusText);
+      return payload;
+    }
+
+    async function loadAuth() {
+      if (!localStorage.getItem("arcaneLabAuthToken")) {
+        app.auth = null;
+        return;
+      }
+      try {
+        app.auth = await api("/api/auth/status");
+      } catch {
+        app.auth = null;
+      }
+    }
+
+    async function loadGames(selectId = null) {
+      await loadAuth();
+      app.games = await api("/api/games");
+      const select = $("gameSelect");
+      clear(select);
+      for (const game of app.games) {
+        const option = document.createElement("option");
+        option.value = game.id;
+        option.textContent = `${game.label} | r${game.run ?? "-"} t${game.tick ?? "-"} L${game.lifetime_tick ?? "-"} | ${game.entry_count} frames`;
+        select.appendChild(option);
+      }
+      if (selectId) select.value = selectId;
+      if (!select.value && app.games.length) select.value = app.games[0].id;
+      if (select.value) await openGame(select.value, false);
+      render();
+    }
+
+    async function createGame() {
+      const label = `game-${new Date().toLocaleTimeString()}`;
+      const game = await api("/api/games", {
+        method: "POST",
+        body: JSON.stringify({ label })
+      });
+      app.verification = null;
+      await loadGames(game.summary.id);
+    }
+
+    async function openGame(gameId, shouldRender = true) {
+      app.game = await api(`/api/games/${encodeURIComponent(gameId)}`);
+      app.index = Math.max(0, app.game.trajectory.entries.length - 1);
+      app.verification = app.game.verification || null;
+      if (shouldRender) render();
+    }
+
+    async function runCommand(command) {
+      if (!app.game) await createGame();
+      const gameId = app.game.summary.id;
+      const commands = command.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      const endpoint = commands.length > 1 ? "commands" : "command";
+      const body = commands.length > 1 ? { commands } : { command: commands[0] };
+      app.game = await api(`/api/games/${encodeURIComponent(gameId)}/${endpoint}`, {
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+      app.index = app.game.trajectory.entries.length - 1;
+      app.verification = null;
+      $("commandInput").value = "";
+      await loadGames(gameId);
+    }
+
+    async function verifyGame() {
+      if (!app.game) return;
+      const gameId = app.game.summary.id;
+      app.verification = await api(`/api/games/${encodeURIComponent(gameId)}/verify`, {
+        method: "POST",
+        body: JSON.stringify({})
+      });
+      render();
+    }
+
+    function render() {
+      const entry = currentEntry();
+      const entries = app.game?.trajectory?.entries || [];
+      $("commandInput").disabled = !app.game;
+      $("verifyBtn").disabled = !app.game;
+      $("replaySlider").max = Math.max(entries.length - 1, 0);
+      $("replaySlider").value = app.index;
+      $("backBtn").disabled = !entries.length || app.index <= 0;
+      $("nextBtn").disabled = !entries.length || app.index >= entries.length - 1;
+      $("playBtn").disabled = entries.length < 2;
+      $("timelineCount").textContent = `${entries.length} frame${entries.length === 1 ? "" : "s"}`;
+      renderTop(entry);
+      renderRouteMap(entries);
+      renderTimeline(entries);
+      renderFrame(entry);
+      renderState(entry?.observation || null);
+      renderRouteQuality();
+      renderVerification();
+    }
+
+    function renderTop(entry) {
+      const obs = entry?.observation || {};
+      const summary = app.game?.summary || {};
+      const session = app.game?.trajectory?.session || {};
+      const score = obs.score || {};
+      const crit = obs.crit || session.crit || {};
+      const metrics = [
+        ["Run", `Run ${fmt(obs.run ?? summary.run)}`],
+        ["Tick", fmt(obs.tick ?? summary.tick)],
+        ["Lifetime", fmt(obs.lifetime_tick ?? summary.lifetime_tick)],
+        ["Reward", fmt(score.reward ?? summary.reward)],
+        ["Attempt", session.official ? "Official" : "Practice"],
+        ["Crit", crit.mode ? `${crit.mode} crit` : "-"],
+        ["Auth", app.auth ? `${app.auth.remaining_new_games ?? 0} game left` : "No token"]
+      ];
+      const parent = $("topMetrics");
+      clear(parent);
+      for (const [label, value] of metrics) {
+        const node = document.createElement("div");
+        node.className = "top-metric";
+        node.appendChild(textNode("span", "", label));
+        node.appendChild(textNode("strong", "", value));
+        parent.appendChild(node);
+      }
+    }
+
+    function renderRouteMap(entries) {
+      const parent = $("routeMap");
+      clear(parent);
+      if (!entries.length) {
+        parent.appendChild(textNode("div", "muted", "No trajectory"));
+        return;
+      }
+      const verification = app.verification;
+      const maxLifetime = Math.max(...entries.map(entryLifetime), 1);
+      const softStop = Number(verification?.softStopTick ?? 0) || null;
+      const hardBudget = Number(verification?.tickBudget ?? verification?.lifetimeTickBudget ?? 0) || null;
+      const scaleMax = Math.max(maxLifetime, softStop || 0, hardBudget || 0, 1);
+      const scale = document.createElement("div");
+      scale.className = "route-scale";
+      const fill = document.createElement("div");
+      fill.className = "route-fill";
+      fill.style.width = `${Math.min(100, maxLifetime / scaleMax * 100)}%`;
+      scale.appendChild(fill);
+
+      function addLine(value, className, label) {
+        if (!value) return;
+        const line = document.createElement("div");
+        line.className = `route-line ${className}`;
+        line.style.left = `${Math.min(100, value / scaleMax * 100)}%`;
+        line.title = `${label} L${value}`;
+        scale.appendChild(line);
+      }
+
+      addLine(softStop, "soft", "soft stop");
+      addLine(hardBudget, "hard", "hard budget");
+      for (const entry of entries) {
+        const previous = previousEntry(entries, entry);
+        const signals = entrySignals(entry, previous, verification);
+        if (!signals.failed && !signals.retire && !signals.critRoll && entry.index !== app.index) continue;
+        const marker = document.createElement("button");
+        marker.type = "button";
+        marker.className = "route-marker";
+        if (signals.failed) marker.classList.add("fail");
+        else if (signals.retire) marker.classList.add("retire");
+        else if (signals.critRoll) marker.classList.add("crit");
+        if (entry.index === app.index) marker.classList.add("active");
+        marker.style.left = `${Math.min(100, entryLifetime(entry) / scaleMax * 100)}%`;
+        const critTitle = signals.critRoll ? ` | crit ${signals.critHits}/${signals.critRolls}` : "";
+        marker.title = `#${entry.index} ${entry.command} | L${entryLifetime(entry)}${critTitle}`;
+        marker.addEventListener("click", () => {
+          app.index = entry.index;
+          render();
+        });
+        scale.appendChild(marker);
+      }
+      parent.appendChild(scale);
+      const legend = document.createElement("div");
+      legend.className = "route-legend";
+      legend.appendChild(textNode("span", "", `L${maxLifetime} / ${hardBudget || scaleMax}`));
+      if (softStop) legend.appendChild(textNode("span", "", "soft line"));
+      for (const [className, label] of [["retire", "retire"], ["fail", "fail"], ["crit", "crit"]]) {
+        const item = document.createElement("span");
+        const dot = document.createElement("span");
+        dot.className = `legend-dot ${className}`;
+        item.appendChild(dot);
+        item.appendChild(document.createTextNode(label));
+        legend.appendChild(item);
+      }
+      parent.appendChild(legend);
+    }
+
+    function renderTimeline(entries) {
+      const timeline = $("timeline");
+      clear(timeline);
+      for (const entry of entries) {
+        const signals = entrySignals(entry, previousEntry(entries, entry));
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "timeline-item" + (entry.index === app.index ? " active" : "");
+        if (signals.failed) button.classList.add("fail");
+        if (signals.softOver) button.classList.add("soft-over");
+        if (signals.hardOver) button.classList.add("hard-over");
+        button.addEventListener("click", () => {
+          app.index = entry.index;
+          render();
+        });
+        button.appendChild(textNode("span", "timeline-index", `#${entry.index}`));
+        const main = document.createElement("span");
+        main.className = "timeline-main";
+        main.appendChild(textNode("span", "timeline-command", entry.command));
+        const markers = document.createElement("span");
+        markers.className = "timeline-markers";
+        if (signals.failed) markers.appendChild(textNode("span", "marker fail", "fail"));
+        if (signals.retire) markers.appendChild(textNode("span", "marker retire", "retire"));
+        if (signals.critHit) markers.appendChild(textNode("span", "marker crit", `crit x${signals.critHits}`));
+        else if (signals.critRoll) markers.appendChild(textNode("span", "marker crit", `roll x${signals.critRolls}`));
+        if (signals.softCross) markers.appendChild(textNode("span", "marker soft", "soft"));
+        if (signals.hardOver) markers.appendChild(textNode("span", "marker hard", "budget"));
+        if (!markers.childNodes.length) markers.appendChild(textNode("span", "muted", ""));
+        main.appendChild(markers);
+        button.appendChild(main);
+        const obs = entry.observation || {};
+        button.appendChild(textNode("span", "timeline-tick", `r${obs.run ?? "-"} t${obs.tick ?? "-"} L${obs.lifetime_tick ?? "-"}`));
+        timeline.appendChild(button);
+      }
+    }
+
+    function renderFrame(entry) {
+      const stats = $("frameStats");
+      clear(stats);
+      clear($("frameChips"));
+      if (!entry) {
+        $("frameTitle").textContent = "No frame selected";
+        $("frameMeta").textContent = "";
+        $("stateMeta").textContent = "";
+        $("frameOutput").textContent = "";
+        $("statusText").textContent = "";
+        return;
+      }
+      const obs = entry.observation || {};
+      const mana = obs.mana || {};
+      const hp = obs.hp || {};
+      const combat = obs.combat || {};
+      const score = obs.score || {};
+      addStat(stats, "Run / Tick", `${fmt(obs.run)} / ${fmt(obs.tick)}`);
+      addStat(stats, "Lifetime Tick", fmt(obs.lifetime_tick));
+      addStat(stats, "Mana", `${fmt(mana.current)} / ${fmt(mana.max)}`);
+      addStat(stats, "HP", `${fmt(hp.current)} / ${fmt(hp.max)}`);
+      addStat(stats, "Attack / Defense", `${fmt(combat.attack)} / ${fmt(combat.defense)}`);
+      addStat(stats, "Insight", obs.insight ?? "-");
+      addStat(stats, "Reward", score.reward ?? "-");
+      addStat(stats, "Storylines", (obs.completed_storylines || []).length);
+      addStat(stats, "Roll", obs.crit?.roll_index ?? "-");
+      $("frameTitle").textContent = entry.command || "Frame";
+      $("frameMeta").textContent = entry.wall_time || "";
+      $("stateMeta").textContent = `#${entry.index}`;
+      $("frameOutput").textContent = entry.output || "";
+      $("statusText").textContent = obs.status_text || "";
+      const chips = $("frameChips");
+      const entries = app.game?.trajectory?.entries || [];
+      const signals = entrySignals(entry, previousEntry(entries, entry));
+      chips.appendChild(textNode("span", "pill teal", `r${fmt(obs.run)} t${fmt(obs.tick)} L${fmt(obs.lifetime_tick)}`));
+      if (obs.crit?.mode) chips.appendChild(textNode("span", "pill violet", `${obs.crit.mode} crit`));
+      if (signals.failed) chips.appendChild(textNode("span", "pill red", "failed command"));
+      if (signals.retire) chips.appendChild(textNode("span", "pill amber", "retire"));
+      if (signals.critHit) chips.appendChild(textNode("span", "pill violet", `crit hit x${signals.critHits}`));
+      else if (signals.critRoll) chips.appendChild(textNode("span", "pill violet", `crit roll x${signals.critRolls}`));
+      if (signals.softOver) chips.appendChild(textNode("span", "pill amber", "past soft stop"));
+      if (signals.hardOver) chips.appendChild(textNode("span", "pill red", "past budget"));
+      if (entry.done) chips.appendChild(textNode("span", "pill red", "done"));
+    }
+
+    function addStat(parent, label, value) {
+      const node = document.createElement("div");
+      node.className = "stat";
+      node.appendChild(textNode("span", "", label));
+      node.appendChild(textNode("strong", "", fmt(value)));
+      parent.appendChild(node);
+    }
+
+    function renderState(obs) {
+      renderKeyValues($("resources"), obs?.resources || {});
+      renderCombat(obs);
+      renderCrit(obs?.crit || null);
+      renderElements($("elements"), obs?.elements || {});
+      renderEquipment($("equipment"), obs?.equipment || {});
+      renderAreas($("areas"), obs?.areas || {});
+      renderGoals($("goals"), obs?.next_goals || []);
+      $("hiddenGoals").textContent = `${obs?.hidden_goal_count ?? 0} hidden`;
+      clear($("stateChips"));
+      if (obs?.retirement_unlocked) $("stateChips").appendChild(textNode("span", "pill amber", "Retire ready"));
+      if (obs?.assignments && Object.keys(obs.assignments).length) $("stateChips").appendChild(textNode("span", "pill teal", "Automation"));
+    }
+
+    function renderCombat(obs) {
+      const combat = obs?.combat || {};
+      const mana = obs?.mana || {};
+      const hp = obs?.hp || {};
+      renderPairs($("combatBox"), [
+        ["attack", combat.attack],
+        ["defense", combat.defense],
+        ["hp", `${fmt(hp.current)} / ${fmt(hp.max)}`],
+        ["mana rate", mana.rate]
+      ]);
+    }
+
+    function renderCrit(crit) {
+      $("critMode").textContent = crit?.mode ? `${crit.mode}` : "-";
+      const last = crit?.last || {};
+      const rows = crit?.mode === "charge" ? [
+        ["charge", crit ? `${crit.charge}/${crit.max_charge}` : "-"],
+        ["charge gain", crit?.charge_gain],
+        ["bonus", crit?.charge_bonus !== undefined ? `${Math.round(crit.charge_bonus * 100)}%` : "-"],
+        ["triggered", last.triggered === undefined ? "-" : (last.triggered ? "yes" : "no")]
+      ] : [
+        ["roll index", crit?.roll_index],
+        ["chance", crit?.random_chance !== undefined ? `${Math.round(crit.random_chance * 100)}%` : "-"],
+        ["bonus", crit?.random_bonus !== undefined ? `${Math.round(crit.random_bonus * 100)}%` : "-"],
+        ["last roll", last.roll],
+        ["triggered", last.triggered === undefined ? "-" : (last.triggered ? "yes" : "no")]
+      ];
+      renderPairs($("critBox"), rows);
+    }
+
+    function renderPairs(parent, pairs) {
+      clear(parent);
+      for (const [key, value] of pairs) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.appendChild(textNode("div", "name", key));
+        row.appendChild(textNode("div", "value", fmt(value)));
+        parent.appendChild(row);
+      }
+    }
+
+    function renderKeyValues(parent, values) {
+      const entries = Object.entries(values);
+      if (!entries.length) {
+        clear(parent);
+        parent.appendChild(textNode("div", "muted", "none"));
+        return;
+      }
+      renderPairs(parent, entries);
+    }
+
+    function renderElements(parent, values) {
+      clear(parent);
+      const entries = Object.entries(values);
+      if (!entries.length) parent.appendChild(textNode("div", "muted", "none"));
+      for (const [key, value] of entries) {
+        const row = document.createElement("div");
+        row.className = "row";
+        const level = value.level ?? 0;
+        const xp = value.xp ?? 0;
+        row.appendChild(textNode("div", "name", key));
+        row.appendChild(textNode("div", "value", `level ${level} | xp ${Number(xp).toFixed(1)}`));
+        parent.appendChild(row);
+      }
+    }
+
+    function renderEquipment(parent, values) {
+      clear(parent);
+      const entries = Object.entries(values);
+      if (!entries.length) parent.appendChild(textNode("span", "muted", "none"));
+      for (const [key, value] of entries) {
+        parent.appendChild(textNode("span", "pill teal", `${key} x${value}`));
+      }
+    }
+
+    function renderAreas(parent, areas) {
+      clear(parent);
+      const entries = Object.entries(areas);
+      if (!entries.length) parent.appendChild(textNode("div", "muted", "none"));
+      for (const [key, value] of entries) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.appendChild(textNode("div", "name", key));
+        row.appendChild(textNode("div", "value", `progress ${value.progress ?? 0} | clears ${value.clears ?? 0}`));
+        parent.appendChild(row);
+      }
+    }
+
+    function renderGoals(parent, goals) {
+      clear(parent);
+      if (!goals.length) {
+        parent.appendChild(textNode("div", "muted", "none"));
+        return;
+      }
+      for (const goal of goals) {
+        const block = document.createElement("div");
+        block.className = "goal-card";
+        const title = document.createElement("div");
+        title.className = "goal-title";
+        title.appendChild(textNode("strong", "", goal.name || goal.id));
+        title.appendChild(textNode("span", "pill violet", goal.id || "goal"));
+        block.appendChild(title);
+        block.appendChild(textNode("div", "muted", goal.description || ""));
+        for (const progress of goal.progress || []) {
+          const row = document.createElement("div");
+          row.className = "row";
+          row.appendChild(textNode("div", "name", progress.label || "progress"));
+          const current = Number(progress.current || 0);
+          const target = Number(progress.target || 0);
+          const wrapper = document.createElement("div");
+          wrapper.className = "value";
+          wrapper.appendChild(textNode("div", "", `${progress.current ?? 0} / ${progress.target ?? 0}`));
+          const bar = document.createElement("div");
+          bar.className = "bar";
+          const fill = document.createElement("div");
+          fill.style.width = target > 0 ? `${Math.min(100, Math.max(0, current / target * 100))}%` : "0%";
+          bar.appendChild(fill);
+          wrapper.appendChild(bar);
+          row.appendChild(wrapper);
+          block.appendChild(row);
+        }
+        parent.appendChild(block);
+      }
+    }
+
+    function renderRouteQuality() {
+      const quality = computeReplayQuality();
+      const grade = $("routeGrade");
+      grade.textContent = quality.grade;
+      grade.className = "pill";
+      if (quality.score !== null) {
+        grade.className = quality.score >= 0.8 ? "pill teal" : (quality.score >= 0.5 ? "pill amber" : "pill red");
+      }
+      const components = quality.components;
+      const pairs = [
+        ["score", quality.score === null ? "not verified" : quality.score.toFixed(3)],
+        ["goal", components.goal === null ? "-" : pct(components.goal)],
+        ["tick efficiency", components.tickEfficiency === null ? "-" : pct(components.tickEfficiency)],
+        ["soft stop", components.softStop === null ? "-" : pct(components.softStop)],
+        ["command clean", pct(components.commandCleanliness)],
+        ["failed commands", quality.metrics.failed],
+        ["retire markers", quality.metrics.retirements],
+        ["crit hits", `${quality.metrics.critHits} / ${quality.metrics.critRolls}`],
+        ["budget used", quality.budget ? `${quality.metrics.finalLifetime} / ${quality.budget}` : quality.metrics.finalLifetime]
+      ];
+      renderPairs($("routeQualityBox"), pairs);
+      const warnings = $("routeWarnings");
+      clear(warnings);
+      if (!quality.warnings.length) {
+        warnings.appendChild(textNode("span", "muted", "no route warnings"));
+        return;
+      }
+      for (const warning of quality.warnings) {
+        const className = warning.includes("exceeded") || warning.includes("failed") ? "pill red" : "pill amber";
+        warnings.appendChild(textNode("span", className, warning));
+      }
+    }
+
+    function renderVerification() {
+      const verify = app.verification;
+      const goal = verify?.goalCompletion || null;
+      const goalFailed = goal?.failed || [];
+      let stateText = "idle";
+      let stateClass = "pill";
+      if (verify) {
+        stateText = verify.outcome || (verify.accepted ? "accepted" : "rejected");
+        stateClass = verify.accepted ? "pill teal" : "pill red";
+        if (verify.accepted && verify.goalAchieved === false) stateClass = "pill amber";
+      }
+      $("verifyState").textContent = stateText;
+      $("verifyState").className = stateClass;
+      const pairs = verify ? [
+        ["reward", verify.reward],
+        ["accepted", verify.accepted],
+        ["goal achieved", verify.goalAchieved],
+        ["goal passed", goal ? `${goal.achievedCount ?? 0} / ${goal.total ?? 0}` : "-"],
+        ["goal failed", goalFailed.length ? goalFailed.join(", ") : "-"],
+        ["lifetime budget", verify.tickBudget],
+        ["lifetime used", verify.tickBudgetUsed],
+        ["lifetime exceeded", verify.lifetimeTickBudgetExceeded],
+        ["soft stop", verify.softStopTick],
+        ["soft used", verify.softStopUsed],
+        ["soft exceeded", verify.softStopExceeded],
+        ["soft score", verify.softStopScore],
+        ["per-run budget", verify.perRunTickBudget],
+        ["per-run used", verify.perRunTickBudgetUsed],
+        ["per-run exceeded", verify.perRunTickBudgetExceeded],
+        ["entry count", verify.entryCount],
+        ["trajectory", verify.trajectory_hash ? verify.trajectory_hash.slice(0, 12) : "-"]
+      ] : [["status", "not run"]];
+      renderPairs($("verifyBox"), pairs);
+    }
+
+    function stepReplay(delta) {
+      const entries = app.game?.trajectory?.entries || [];
+      app.index = Math.min(Math.max(app.index + delta, 0), Math.max(0, entries.length - 1));
+      render();
+    }
+
+    function togglePlay() {
+      if (app.timer) {
+        clearInterval(app.timer);
+        app.timer = null;
+        $("playBtn").textContent = "▶";
+        return;
+      }
+      $("playBtn").textContent = "Ⅱ";
+      app.timer = setInterval(() => {
+        const entries = app.game?.trajectory?.entries || [];
+        if (app.index >= entries.length - 1) {
+          togglePlay();
+          return;
+        }
+        stepReplay(1);
+      }, 650);
+    }
+
+    $("newGameBtn").addEventListener("click", () => createGame().catch(showError));
+    $("refreshBtn").addEventListener("click", () => loadGames(app.game?.summary?.id).catch(showError));
+    $("verifyBtn").addEventListener("click", () => verifyGame().catch(showError));
+    $("saveTokenBtn").addEventListener("click", () => {
+      const token = $("tokenInput").value.trim();
+      if (token) localStorage.setItem("arcaneLabAuthToken", token);
+      else localStorage.removeItem("arcaneLabAuthToken");
+      loadGames(app.game?.summary?.id).catch(showError);
+    });
+    $("gameSelect").addEventListener("change", (event) => openGame(event.target.value).catch(showError));
+    $("commandForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const command = $("commandInput").value.trim();
+      if (command) runCommand(command).catch(showError);
+    });
+    $("replaySlider").addEventListener("input", (event) => {
+      app.index = Number(event.target.value);
+      render();
+    });
+    $("backBtn").addEventListener("click", () => stepReplay(-1));
+    $("nextBtn").addEventListener("click", () => stepReplay(1));
+    $("playBtn").addEventListener("click", togglePlay);
+
+    function showError(error) {
+      $("error").textContent = error.message || String(error);
+      setTimeout(() => { $("error").textContent = ""; }, 6000);
+    }
+
+    $("tokenInput").value = localStorage.getItem("arcaneLabAuthToken") || "";
+    loadGames().catch(showError);
+  </script>
+</body>
+</html>

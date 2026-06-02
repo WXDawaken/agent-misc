@@ -1,0 +1,36 @@
+# Deterministic mid-game run for Arcane Lab.
+# Goal: reach Quiet Archive, clear Gear Sanctum, clear Prism Observatory, and unlock Vital.
+cast shape_pebble
+study ember 2
+cast fire_lance
+explore training_yard 2
+transmute focus_lens
+hire 1
+assign shape_pebble 1
+study stone 2
+batch cast stone_skin@1 fire_lance@2
+explore shaded_grove 3
+batch transmute guard_charm@1 focus_lens@2
+unassign
+tick 8
+study ember 7
+study gale 2
+tick 6
+batch cast tailwind@1 stone_skin@2 fire_lance@3
+explore sunken_stacks 3
+batch transmute index_engine@1 ember_rod@2
+tick 8
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore gear_sanctum 3
+tick 6
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore gear_sanctum 1
+batch transmute relic_frame
+tick 7
+batch cast route_sketch@1 tailwind@2 stone_skin@3 fire_lance@4
+explore prism_observatory 3
+status
+list spells
+list recipes
+list areas
+list goals

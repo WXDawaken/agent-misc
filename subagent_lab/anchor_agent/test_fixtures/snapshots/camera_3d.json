@@ -1,0 +1,30 @@
+{
+  "object_id": "node_camera",
+  "engine": "godot",
+  "object_kind": "node",
+  "display_name": "Camera3D",
+  "type_name": "Camera3D",
+  "path": "/root/Main/Camera3D",
+  "scene_path": "res://levels/main.tscn",
+  "parent_id": "node_main",
+  "properties": {
+    "current": true,
+    "attached_script_path": "",
+    "has_script": false
+  },
+  "relations": [
+    {
+      "kind": "parent",
+      "target_id": "node_main",
+      "label": "Main"
+    }
+  ],
+  "diagnostics": [],
+  "capabilities": [
+    "scene_editable"
+  ],
+  "selection_state": {
+    "selected": true,
+    "selection_index": 0
+  }
+}

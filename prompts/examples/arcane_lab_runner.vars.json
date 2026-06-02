@@ -1,0 +1,13 @@
+{
+  "allowed_docs": [
+    "README.md",
+    "docs\\agent-brief.md",
+    "docs\\sdk-api.md",
+    "scripts\\smoke.txt"
+  ],
+  "model": "example-model",
+  "report_path": "logs\\example_report.md",
+  "soft_stop_tick": 240,
+  "tick_budget": 260,
+  "workspace": "E:\\agent_misc\\playground\\agent_workspaces\\example"
+}

@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "default_suite": "core",
+  "default_shared_prompt_path": "docs\\tracks\\shared.md",
+  "suites": {
+    "smoke": {
+      "description": "Fast sanity check for SDK wiring, command batching, and early mechanics.",
+      "tracks": [
+        "mechanics-check"
+      ]
+    },
+    "core": {
+      "description": "Routine baseline set for most model comparisons.",
+      "tracks": [
+        "mechanics-check",
+        "route-optimization",
+        "budgeted-prestige"
+      ]
+    },
+    "prestige": {
+      "description": "Prestige-route variants without the long pure-discovery tracks.",
+      "tracks": [
+        "route-optimization",
+        "budgeted-prestige",
+        "crit-build-eval"
+      ]
+    },
+    "helper-eval": {
+      "description": "Prestige task with a provided assertion-capable practice helper for models that otherwise rebuild helper scaffolding repeatedly.",
+      "tracks": [
+        "provided-helper-prestige"
+      ]
+    },
+    "warmup": {
+      "description": "Orchestration-only mechanics warmup plus prestige solve forks. This requires the external warmup runner rather than the normal single-run track runner.",
+      "tracks": [
+        "warmup-fork-prestige"
+      ]
+    },
+    "discovery": {
+      "description": "Higher-context exploration tracks with progressively less disclosed route information.",
+      "tracks": [
+        "pure-blind",
+        "blind-discovery",
+        "visible-goal"
+      ]
+    },
+    "full": {
+      "description": "All active single-run tracks in config order. Orchestration-only warmup handoff studies are exposed through the warmup suite.",
+      "tracks": [
+        "pure-blind",
+        "blind-discovery",
+        "visible-goal",
+        "mechanics-check",
+        "budgeted-prestige",
+        "provided-helper-prestige",
+        "route-optimization",
+        "crit-build-eval"
+      ]
+    }
+  },
+  "tracks": {
+    "pure-blind": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\pure-blind.md",
+      "tick_budget": 420,
+      "soft_stop_gap": 40,
+      "budget_rationale": "pure player-visible discovery spends substantial budget learning basic systems",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- Do not read documentation or helper files beyond this prompt.",
+        "- Do not read `docs\\agent-brief.md`, `docs\\sdk-api.md`, `docs\\tasks.md`, `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`.",
+        "- Learn through allowed SDK observations, `status`, normal `list` commands, and command outputs."
+      ],
+      "source_policy_extra_forbidden": [
+        {
+          "name": "pure-doc-readme",
+          "pattern": "README.md"
+        },
+        {
+          "name": "pure-doc-agent-brief",
+          "pattern": "docs\\agent-brief.md"
+        },
+        {
+          "name": "pure-doc-sdk-api",
+          "pattern": "docs\\sdk-api.md"
+        },
+        {
+          "name": "pure-doc-tasks",
+          "pattern": "docs\\tasks.md"
+        }
+      ]
+    },
+    "blind-discovery": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\blind-discovery.md",
+      "tick_budget": 360,
+      "soft_stop_gap": 30,
+      "budget_rationale": "doc-assisted discovery needs extra exploratory ticks before route commitment",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, and `docs\\sdk-api.md`.",
+        "- Do not read `docs\\tasks.md`, `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {
+          "name": "tasks-doc",
+          "pattern": "docs\\tasks.md"
+        }
+      ]
+    },
+    "visible-goal": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\visible-goal.md",
+      "tick_budget": 320,
+      "soft_stop_gap": 30,
+      "budget_rationale": "target names are visible but unlock thresholds and route order must still be inferred",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, and `docs\\sdk-api.md`.",
+        "- Do not read `docs\\tasks.md`, `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {
+          "name": "tasks-doc",
+          "pattern": "docs\\tasks.md"
+        }
+      ]
+    },
+    "mechanics-check": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\mechanics-check.md",
+      "tick_budget": 90,
+      "soft_stop_gap": 20,
+      "budget_rationale": "short early-route mechanics exercise; success should stay far below the hard budget",
+      "goal": {
+        "storyline": "field_notes",
+        "recipe": "focus_lens",
+        "wizards": 1,
+        "assignment": "shape_pebble",
+        "area": "shaded_grove",
+        "area_clears": 1
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, and `docs\\sdk-api.md`.",
+        "- Do not read `docs\\tasks.md`, `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": [
+        {
+          "name": "tasks-doc",
+          "pattern": "docs\\tasks.md"
+        }
+      ]
+    },
+    "budgeted-prestige": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\budgeted-prestige.md",
+      "tick_budget": 260,
+      "soft_stop_gap": 20,
+      "budget_rationale": "known prestige target without route milestones; close to the reference route plus planning margin",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": []
+    },
+    "provided-helper-prestige": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\provided-helper-prestige.md",
+      "helper_profile": "provided_assertive",
+      "provided_helper_paths": [
+        "tools\\arcane_practice_helper.py"
+      ],
+      "tick_budget": 260,
+      "soft_stop_gap": 20,
+      "budget_rationale": "same prestige target as budgeted-prestige; provided helper should reduce practice scaffolding overhead, not route difficulty",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, `docs\\tasks.md`, and `tools\\arcane_practice_helper.py`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+        "source_policy_extra_forbidden": []
+      },
+    "warmup-fork-prestige": {
+      "orchestration_only": true,
+      "offline_practice": true,
+      "warmup_workspace_track": "mechanics-check",
+      "prompt_path": "docs\\tracks\\warmup-prestige-solve.md",
+      "phase_prompt_paths": {
+        "warmup": "docs\\tracks\\warmup-mechanics-base.md",
+        "solve": "docs\\tracks\\warmup-prestige-solve.md"
+      },
+      "orchestration": {
+        "type": "warmup_fork",
+        "base_count": 1,
+        "forks_per_base": 5,
+        "base_official_new_games": 0,
+        "solve_official_new_games": 1,
+        "session_policy": "Create one mechanics-check-style warmup session, then run five independent prestige solve attempts using the selected handoff mode.",
+        "independence_policy": "Solve attempts may share only the allowed warmup handoff for their mode; they must not see or inherit sibling solve-attempt transcripts.",
+        "default_handoff_mode": "session-fork",
+        "supported_handoff_modes": [
+          "session-fork",
+          "artifact-only",
+          "cold-solve"
+        ],
+        "recommended_opencode_shape": "Use scripts\\run_opencode_warmup_fork_playtest.py with --handoff-mode session-fork, artifact-only, or cold-solve."
+      },
+      "tick_budget": 260,
+      "soft_stop_gap": 20,
+      "budget_rationale": "same prestige target as budgeted-prestige; one mechanics warmup reduces repeated API/mechanics rediscovery without seeding route candidates",
+      "warmup_artifacts": [
+        "logs\\mechanics.md",
+        "logs\\gotchas.md",
+        "logs\\warmup_summary.md"
+      ],
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "warmup_source_policy_extra_forbidden": [
+        {
+          "name": "warmup-tasks-doc",
+          "pattern": "docs\\tasks.md"
+        }
+      ],
+      "source_policy_extra_forbidden": []
+    },
+    "route-optimization": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\route-optimization.md",
+      "tick_budget": 260,
+      "soft_stop_gap": 20,
+      "budget_rationale": "route-hinted prestige execution; budget emphasizes efficiency",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": []
+    },
+    "crit-build-eval": {
+      "offline_practice": true,
+      "prompt_path": "docs\\tracks\\crit-build-eval.md",
+      "crit": {
+        "mode": "random",
+        "random_bonus": 0.5
+      },
+      "tick_budget": 320,
+      "soft_stop_gap": 30,
+      "budget_rationale": "evaluation track spends offline effort comparing crit-investing and crit-neutral route candidates before one official prestige attempt",
+      "goal": {
+        "storyline": "echo_vault_attuned",
+        "recipe": "echo_anchor",
+        "area": "echo_vault",
+        "area_clears": 1,
+        "retirements": 1,
+        "insight": 12,
+        "run": 2
+      },
+      "reference_policy": [
+        "- You may read `README.md`, `docs\\agent-brief.md`, `docs\\sdk-api.md`, and `docs\\tasks.md`.",
+        "- Do not read `scripts\\*.txt`, `game.py`, `server.py`, `mcp_server.py`, `sdk\\*.py`, or `data\\*.json`."
+      ],
+      "source_policy_extra_forbidden": []
+    }
+  }
+}

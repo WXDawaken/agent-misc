@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playground Test Results</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Playground benchmark archive</p>
+      <h1>Test Results By Environment</h1>
+    </div>
+    <div class="generated" id="generatedAt"></div>
+  </header>
+
+  <main>
+    <section class="summary-band" id="summaryBand" aria-label="Summary"></section>
+
+    <section class="controls" aria-label="Filters">
+      <label>
+        <span>Environment</span>
+        <select id="envFilter"></select>
+      </label>
+      <label>
+        <span>Runner</span>
+        <select id="runnerFilter"></select>
+      </label>
+      <label>
+        <span>Status</span>
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="success">Success</option>
+          <option value="partial">Partial</option>
+          <option value="no-score">No score</option>
+          <option value="accepted">Accepted</option>
+          <option value="rejected">Rejected</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </label>
+      <label>
+        <span>Search</span>
+        <input id="searchFilter" type="search" placeholder="model, track, game id">
+      </label>
+      <label class="check">
+        <input id="cleanOnly" type="checkbox">
+        <span>Source clean only</span>
+      </label>
+    </section>
+
+    <div id="envSections"></div>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

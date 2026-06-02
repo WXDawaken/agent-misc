@@ -1,0 +1,11 @@
+{
+  "action_id": "review_collision_shape_setup",
+  "title": "Review collision shape setup",
+  "why": "Suggested because the selected CharacterBody3D does not advertise a collision-shape capability, which makes movement and contact previews incomplete.",
+  "observed_features": [
+    "type_name=CharacterBody3D",
+    "capability=move",
+    "capability_missing=has_collision_shape",
+    "path=/root/Main/GhostPlayer"
+  ]
+}

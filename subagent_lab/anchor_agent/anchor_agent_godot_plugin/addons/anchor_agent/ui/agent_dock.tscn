@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/anchor_agent/ui/agent_dock.gd" id="1"]
+
+[node name="AgentDock" type="VBoxContainer"]
+offset_right = 320.0
+offset_bottom = 520.0
+script = ExtResource("1")
+
+[node name="Title" type="Label" parent="."]
+text = "Anchor Agent Preview"
+
+[node name="TargetSummary" type="Label" parent="."]
+text = "Select a node to inspect its context and suggested actions."
+autowrap_mode = 2
+
+[node name="Actions" type="ItemList" parent="."]
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="Preview" type="RichTextLabel" parent="."]
+fit_content = true
+bbcode_enabled = false
+text = "Choose an action to review a preview plan before any editor-side change."

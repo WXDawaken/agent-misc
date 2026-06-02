@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ledger Tower Replay</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #161616; color: #f2eee8; }
+    main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    button, input { font: inherit; }
+    input { min-width: 280px; padding: 8px; border: 1px solid #5a5248; background: #222; color: #fff; }
+    button { padding: 8px 12px; border: 1px solid #b89d5b; background: #2b261d; color: #ffe7a4; cursor: pointer; }
+    .grid { display: grid; grid-template-columns: minmax(240px, 360px) 1fr; gap: 18px; margin-top: 20px; }
+    .panel { border: 1px solid #3f3a33; border-radius: 6px; padding: 14px; background: #1e1d1b; }
+    pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
+    .map { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 18px; line-height: 1.25; }
+    .timeline { display: grid; gap: 10px; }
+    .entry { border-left: 3px solid #8bbf9f; padding-left: 10px; }
+    .entry.fail { border-color: #d16b5f; }
+    .muted { color: #b7afa3; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Ledger Tower Replay</h1>
+        <div class="muted">Load a server-backed game trajectory by id.</div>
+      </div>
+      <form id="loader">
+        <input id="gameId" placeholder="game id">
+        <button>Load</button>
+      </form>
+    </header>
+    <section class="grid">
+      <div class="panel">
+        <h2>Final State</h2>
+        <pre id="summary">No game loaded.</pre>
+        <h2>Map</h2>
+        <pre id="map" class="map"></pre>
+      </div>
+      <div class="panel">
+        <h2>Timeline</h2>
+        <div id="timeline" class="timeline"></div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const form = document.getElementById("loader");
+    const summary = document.getElementById("summary");
+    const map = document.getElementById("map");
+    const timeline = document.getElementById("timeline");
+
+    function render(game) {
+      const current = game.current || {};
+      const state = current.state || {};
+      summary.textContent = JSON.stringify({
+        game_id: game.summary && game.summary.id,
+        track: game.summary && game.summary.track,
+        moves: current.moves,
+        floor: current.floor,
+        hp: state.hp,
+        atk: state.atk,
+        def: state.def,
+        gold: state.gold,
+        keys: state.keys,
+        victory: state.victory,
+        reward: game.summary && game.summary.reward,
+        verification: game.verification && game.verification.outcome
+      }, null, 2);
+      map.textContent = (current.floor_map || []).join("\n");
+      timeline.innerHTML = "";
+      for (const entry of (game.trajectory && game.trajectory.entries) || []) {
+        const div = document.createElement("div");
+        const output = String(entry.output || "");
+        div.className = "entry" + (/blocked|not enough|cannot|rejected|unknown|requires/i.test(output) ? " fail" : "");
+        div.innerHTML = `<strong>#${entry.index} ${entry.command}</strong><pre>${output}</pre>`;
+        timeline.appendChild(div);
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const id = document.getElementById("gameId").value.trim();
+      if (!id) return;
+      const response = await fetch(`/api/games/${encodeURIComponent(id)}`);
+      render(await response.json());
+    });
+  </script>
+</body>
+</html>
