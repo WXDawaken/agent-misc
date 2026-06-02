@@ -406,6 +406,11 @@ def render_index() -> str:
   <main>
     <section class="summary-band" id="summaryBand" aria-label="Summary"></section>
 
+    <section class="interpretation-note" aria-label="Metric interpretation note">
+      <strong>Reward and quality are separate signals.</strong>
+      Reward is the environment score; quality is an independent review/rubric signal, so a higher reward does not automatically imply a higher quality grade.
+    </section>
+
     <section class="controls" aria-label="Filters">
       <label>
         <span>Environment</span>
@@ -553,6 +558,20 @@ main {
   font-size: 12px;
 }
 
+.interpretation-note {
+  margin: -4px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 6px;
+  background: #fbfcfa;
+  color: var(--muted);
+}
+
+.interpretation-note strong {
+  color: var(--ink);
+}
+
 .controls {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr auto;
@@ -661,6 +680,18 @@ input[type="search"] {
   background: var(--panel);
 }
 
+.table-details {
+  overflow: visible;
+}
+
+.table-details > summary {
+  cursor: pointer;
+}
+
+.details-table-scroll {
+  overflow: auto;
+}
+
 .table-title {
   display: flex;
   align-items: center;
@@ -674,6 +705,41 @@ input[type="search"] {
 .table-title span {
   color: var(--muted);
   font-size: 12px;
+}
+
+.title-main {
+  display: grid;
+  gap: 2px;
+}
+
+.segmented {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid #c8d0cc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.segmented button {
+  min-height: 30px;
+  border: 0;
+  border-right: 1px solid #c8d0cc;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.segmented button:last-child {
+  border-right: 0;
+}
+
+.segmented button.active {
+  background: var(--blue);
+  color: #fff;
 }
 
 table {
@@ -706,6 +772,177 @@ tbody tr:hover {
 
 .track-name {
   font-weight: 650;
+}
+
+.heatmap-wrap {
+  overflow: auto;
+}
+
+.heatmap-table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  padding: 4px;
+}
+
+.heat-track {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 150px;
+  max-width: 150px;
+  background: #f3f6f4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.heatmap-table thead .heat-track {
+  z-index: 3;
+}
+
+.heat-col {
+  width: 74px;
+  max-width: 74px;
+  white-space: nowrap;
+}
+
+.heat-col div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.heat-col span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.heatmap-cell {
+  height: 38px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.heatmap-cell .heat-value {
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.heatmap-cell .heat-sub {
+  margin-top: 1px;
+  font-size: 10px;
+}
+
+.heat-empty {
+  background: #f1f3f1;
+  color: #97a19b;
+}
+
+.heat-success {
+  background: #d8eddf;
+  color: #215d36;
+}
+
+.heat-partial {
+  background: #f8e9bd;
+  color: #75520f;
+}
+
+.heat-rejected {
+  background: #efd1d1;
+  color: #833030;
+}
+
+.heat-noscore,
+.heat-unknown {
+  background: #e5ebef;
+  color: #52606d;
+}
+
+.track-list {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.harness-row td {
+  border-bottom: 0;
+}
+
+.group-details-row td {
+  padding: 0 10px 10px;
+  background: #fbfcfa;
+  border-bottom: 1px solid #e1e7e2;
+}
+
+.group-details-row:hover {
+  background: transparent;
+}
+
+.run-details summary {
+  cursor: pointer;
+  color: var(--blue);
+  font-weight: 650;
+  padding: 7px 9px;
+  white-space: nowrap;
+}
+
+.run-details {
+  border: 1px solid #e2e8e4;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.run-detail-panel {
+  max-height: 280px;
+  overflow: auto;
+  border-top: 1px solid #edf0ec;
+  background: #fff;
+}
+
+.run-detail-table {
+  min-width: 760px;
+  font-size: 12px;
+}
+
+.run-detail-table th,
+.run-detail-table td {
+  padding: 5px 6px;
+  border-bottom: 1px solid #edf0ec;
+  white-space: nowrap;
+}
+
+.run-detail-table th {
+  position: static;
+  z-index: auto;
+  background: #f8faf8;
+  font-size: 12px;
+}
+
+.run-detail-table .run-track {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.run-detail-table .pill {
+  min-height: 18px;
+  padding: 1px 5px;
+  font-size: 11px;
 }
 
 .muted {
@@ -849,6 +1086,7 @@ const state = {
   status: "",
   search: "",
   cleanOnly: false,
+  trackView: "table",
 };
 
 const fmt = new Intl.NumberFormat("en-US");
@@ -969,6 +1207,12 @@ function populateControls() {
     state.cleanOnly = event.target.checked;
     render();
   });
+  document.querySelector("#envSections").addEventListener("click", event => {
+    const button = event.target.closest?.("[data-track-view]");
+    if (!button) return;
+    state.trackView = button.dataset.trackView || "table";
+    render();
+  });
 }
 
 function renderSummary(rows) {
@@ -984,6 +1228,124 @@ function renderSummary(rows) {
     ["Generated", data.generatedAt.slice(0, 10), "UTC snapshot"],
   ].map(([label, value, sub]) => `<div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div><div class="sub">${esc(sub)}</div></div>`).join("");
   document.querySelector("#generatedAt").textContent = `Generated ${data.generatedAt}`;
+}
+
+function trackViewToggle() {
+  const button = view => `<button type="button" class="${state.trackView === view ? "active" : ""}" data-track-view="${esc(view)}">${view === "table" ? "Table" : "Heatmap"}</button>`;
+  return `<div class="segmented" aria-label="Track matrix view">${button("table")}${button("heatmap")}</div>`;
+}
+
+function trackMatrixTitle(trackCount) {
+  return `<div class="table-title matrix-title">
+    <div class="title-main"><h3>Track Matrix</h3><span>${number(trackCount)} tracks</span></div>
+    ${trackViewToggle()}
+  </div>`;
+}
+
+function statusWeight(status) {
+  return {
+    "success": 5,
+    "accepted": 4,
+    "partial": 3,
+    "no-score": 2,
+    "unknown": 1,
+    "rejected": 0,
+  }[status] ?? 1;
+}
+
+function bestRun(rows) {
+  return rows.slice().sort((a, b) => {
+    const reward = (b.reward ?? -1) - (a.reward ?? -1);
+    if (reward) return reward;
+    const qualityScore = (b.qualityScore ?? -1) - (a.qualityScore ?? -1);
+    if (qualityScore) return qualityScore;
+    const status = statusWeight(b.status) - statusWeight(a.status);
+    if (status) return status;
+    return String(b.date || "").localeCompare(String(a.date || ""));
+  })[0];
+}
+
+function heatClass(row) {
+  if (!row) return "heat-empty";
+  if (row.status === "success") return "heat-success";
+  if (row.status === "accepted" || row.status === "partial") return "heat-partial";
+  if (row.status === "rejected") return "heat-rejected";
+  if (row.status === "no-score") return "heat-noscore";
+  return "heat-unknown";
+}
+
+function compactNumber(value) {
+  if (value === null || value === undefined) return "-";
+  const abs = Math.abs(value);
+  if (abs >= 1000000) return `${pct.format(value / 1000000)}m`;
+  if (abs >= 1000) return `${pct.format(value / 1000)}k`;
+  return number(value);
+}
+
+function compactQuality(row) {
+  if (row.qualityScore === null || row.qualityScore === undefined) return row.qualityGrade || "-";
+  const grade = row.qualityGrade ? `${row.qualityGrade} ` : "";
+  return `${grade}${Math.round(row.qualityScore * 100)}%`;
+}
+
+function compactRunner(value) {
+  return String(value || "")
+    .replace("claude-code-deepseek", "cc-ds")
+    .replace("codex-cli", "codex")
+    .replace("opencode", "open")
+    .replace("reasonix", "rx");
+}
+
+function compactModel(value) {
+  return String(value || "")
+    .replace(/^opencode[/]/, "")
+    .replace("deepseek-v4-", "ds-")
+    .replace("claude-opus-", "opus-")
+    .replace("gemini-", "gem-")
+    .replace("minimax-", "mm-")
+    .replace("[1m]", " 1m");
+}
+
+function compactReasoning(value) {
+  const labels = { high: "h", low: "l", medium: "m", max: "max" };
+  return labels[value] || value || "";
+}
+
+function heatCell(track, group) {
+  const row = bestRun(group.rows.filter(item => item.track === track));
+  if (!row) return '<td class="heatmap-cell heat-empty"><span>-</span></td>';
+  const title = [
+    track,
+    `${group.runner} / ${group.model}${group.reasoning ? ` / ${group.reasoning}` : ""}`,
+    row.status,
+    `reward ${rewardLabel(row)}`,
+    `quality ${qualityLabel(row)}`,
+    row.date || "",
+  ].filter(Boolean).join(" | ");
+  return `<td class="heatmap-cell ${heatClass(row)}" title="${esc(title)}">
+    <div class="heat-value">${esc(compactNumber(row.reward))}</div>
+    <div class="heat-sub">${esc(compactQuality(row))}</div>
+  </td>`;
+}
+
+function heatmapTable(rows) {
+  const tracks = Array.from(new Set(rows.map(row => row.track).filter(Boolean))).sort();
+  const groups = buildHarnessModelGroups(rows);
+  const head = groups.map(group => {
+    const full = `${group.runner} / ${group.model}${group.reasoning ? ` / ${group.reasoning}` : ""}`;
+    const compact = `${compactModel(group.model)}${group.reasoning ? ` ${compactReasoning(group.reasoning)}` : ""}`;
+    return `<th class="heat-col" title="${esc(full)}"><div>${esc(compactRunner(group.runner))}</div><span>${esc(compact)}</span></th>`;
+  }).join("");
+  const body = tracks.map(track => `<tr>
+    <th class="heat-track">${esc(track)}</th>
+    ${groups.map(group => heatCell(track, group)).join("")}
+  </tr>`).join("");
+  return `<div class="heatmap-wrap">
+    <table class="heatmap-table">
+      <thead><tr><th class="heat-track">Track</th>${head}</tr></thead>
+      <tbody>${body}</tbody>
+    </table>
+  </div>`;
 }
 
 function trackTable(envId, rows) {
@@ -1011,23 +1373,138 @@ function trackTable(envId, rows) {
       <td>${best ? `${esc(best.runner)} / ${esc(best.model)}` : '<span class="muted">-</span>'}</td>
     </tr>`;
   }).join("");
-  return `<div class="table-wrap">
-    <div class="table-title"><h3>Track Matrix</h3><span>${number(byTrack.size)} tracks</span></div>
-    <table>
+  const table = `<table>
       <thead><tr><th>Track</th><th>Runs</th><th>Success</th><th>Scored</th><th>Source Clean</th><th>Best Reward</th><th>Best Quality</th><th>Best Scored Sample</th></tr></thead>
       <tbody>${html}</tbody>
-    </table>
+    </table>`;
+  return `<div class="table-wrap">
+    ${trackMatrixTitle(byTrack.size)}
+    ${state.trackView === "heatmap" ? heatmapTable(rows) : table}
   </div>`;
 }
 
-function runTable(rows) {
-  const body = rows.slice().sort((a, b) => {
+function bestScoredRun(rows) {
+  return rows
+    .filter(row => row.reward !== null && row.reward !== undefined)
+    .sort((a, b) => (b.reward - a.reward) || ((b.qualityScore || 0) - (a.qualityScore || 0)))[0];
+}
+
+function trackList(rows) {
+  const tracks = Array.from(new Set(rows.map(row => row.track).filter(Boolean))).sort();
+  const visible = tracks.slice(0, 2).map(track => esc(track)).join(", ");
+  const suffix = tracks.length > 2 ? ` <span class="muted">+${number(tracks.length - 2)} tracks</span>` : "";
+  return `<div class="track-list" title="${esc(tracks.join(", "))}">${visible}${suffix}</div>`;
+}
+
+function sortedRuns(rows) {
+  return rows.slice().sort((a, b) => {
     const date = String(b.date || "").localeCompare(String(a.date || ""));
     if (date) return date;
     const reward = (b.reward ?? -1) - (a.reward ?? -1);
     if (reward) return reward;
     return String(a.track).localeCompare(String(b.track));
-  }).map(row => `<tr>
+  });
+}
+
+function rewardLabel(row) {
+  return row.reward === null || row.reward === undefined ? "-" : number(row.reward);
+}
+
+function qualityLabel(row) {
+  if (row.qualityScore === null || row.qualityScore === undefined) return "-";
+  const grade = row.qualityGrade ? `${row.qualityGrade} ` : "";
+  return `${grade}${pct.format(row.qualityScore * 100)}%`;
+}
+
+function budgetLabel(row) {
+  if (row.budgetUsed === null || row.budgetUsed === undefined) return "-";
+  return `${number(row.budgetUsed)}${row.budget ? ` / ${number(row.budget)}` : ""}`;
+}
+
+function sourceLabel(row) {
+  const count = row.sourceViolations || 0;
+  return count ? `${count} hit${count === 1 ? "" : "s"}` : "clean";
+}
+
+function groupRunDetails(rows) {
+  const trackCount = new Set(rows.map(row => row.track).filter(Boolean)).size;
+  const trackWord = trackCount === 1 ? "track" : "tracks";
+  const body = sortedRuns(rows).map(row => `<tr>
+    <td>${esc(row.date || "")}</td>
+    <td class="run-track" title="${esc(row.track)}">${esc(row.track)}</td>
+    <td>${statusPill(row.status)}</td>
+    <td>${esc(rewardLabel(row))}</td>
+    <td>${esc(qualityLabel(row))}</td>
+    <td>${esc(budgetLabel(row))}</td>
+    <td>${esc(sourceLabel(row))}</td>
+    <td>${esc(seconds(row.wallClockSec) || "-")}</td>
+  </tr>`).join("");
+  return `<details class="run-details">
+    <summary>Run details - ${number(rows.length)} runs - ${number(trackCount)} ${trackWord}</summary>
+    <div class="run-detail-panel">
+      <table class="run-detail-table">
+        <thead><tr><th>Date</th><th>Track</th><th>Status</th><th>Reward</th><th>Quality</th><th>Budget</th><th>Source</th><th>Wall</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+    </div>
+  </details>`;
+}
+
+function buildHarnessModelGroups(rows) {
+  const byHarnessModel = new Map();
+  for (const row of rows) {
+    const key = [row.runner || "", row.model || "", row.reasoning || ""].join("\\u001f");
+    if (!byHarnessModel.has(key)) byHarnessModel.set(key, []);
+    byHarnessModel.get(key).push(row);
+  }
+  return Array.from(byHarnessModel.entries()).map(([key, groupRows]) => {
+    const [runner, model, reasoning] = key.split("\\u001f");
+    const stats = envStats(groupRows);
+    const best = bestScoredRun(groupRows);
+    const latest = groupRows
+      .map(row => row.date)
+      .filter(Boolean)
+      .sort()
+      .pop();
+    const successRate = groupRows.length ? (stats.success / groupRows.length) * 100 : 0;
+    return { runner, model, reasoning, rows: groupRows, stats, best, latest, successRate };
+  }).sort((a, b) => {
+    const reward = (b.best?.reward ?? -1) - (a.best?.reward ?? -1);
+    if (reward) return reward;
+    const success = b.successRate - a.successRate;
+    if (success) return success;
+    return `${a.runner} ${a.model}`.localeCompare(`${b.runner} ${b.model}`);
+  });
+}
+
+function harnessModelTable(rows) {
+  const groups = buildHarnessModelGroups(rows);
+  const body = groups.map(group => {
+    const cleanRate = group.rows.length ? (group.stats.clean / group.rows.length) * 100 : 0;
+    return `<tr class="harness-row">
+      <td><strong>${esc(group.runner)}</strong><div class="muted">${esc(group.model)}${group.reasoning ? ` / ${esc(group.reasoning)}` : ""}</div></td>
+      <td>${number(group.rows.length)}</td>
+      <td>${number(group.stats.success)} <span class="muted">(${pct.format(group.successRate)}%)</span></td>
+      <td>${number(group.stats.scored)}</td>
+      <td>${number(group.stats.clean)} <span class="muted">(${pct.format(cleanRate)}%)</span></td>
+      <td>${group.best ? number(group.best.reward) : '<span class="muted">-</span>'}</td>
+      <td>${group.best ? quality(group.best) : '<span class="muted">-</span>'}</td>
+      <td>${esc(group.latest || "")}</td>
+      <td>${trackList(group.rows)}</td>
+    </tr>
+    <tr class="group-details-row"><td colspan="9">${groupRunDetails(group.rows)}</td></tr>`;
+  }).join("");
+  return `<div class="table-wrap">
+    <div class="table-title"><h3>Harness + Model Results</h3><span>${number(groups.length)} combinations</span></div>
+    <table>
+      <thead><tr><th>Harness / Model</th><th>Runs</th><th>Success</th><th>Scored</th><th>Source Clean</th><th>Best Reward</th><th>Best Quality</th><th>Latest</th><th>Tracks</th></tr></thead>
+      <tbody>${body}</tbody>
+    </table>
+  </div>`;
+}
+
+function runTable(rows) {
+  const body = sortedRuns(rows).map(row => `<tr>
     <td>${esc(row.date || "")}</td>
     <td><strong>${esc(row.runner)}</strong><div class="muted">${esc(row.model)}${row.reasoning ? ` / ${esc(row.reasoning)}` : ""}</div></td>
     <td><span class="track-name">${esc(row.track)}</span><div class="muted">${esc(row.practiceMode || row.workspaceMode || "")}</div></td>
@@ -1039,13 +1516,15 @@ function runTable(rows) {
     <td>${seconds(row.wallClockSec)}</td>
     <td class="mono">${esc(row.gameId || row.trajectory || "")}</td>
   </tr>`).join("");
-  return `<div class="table-wrap">
-    <div class="table-title"><h3>Run Results</h3><span>${number(rows.length)} rows</span></div>
+  return `<details class="table-wrap table-details">
+    <summary class="table-title"><h3>Run Results</h3><span>${number(rows.length)} rows</span></summary>
+    <div class="details-table-scroll">
     <table>
       <thead><tr><th>Date</th><th>Runner / Model</th><th>Track</th><th>Status</th><th>Reward</th><th>Quality</th><th>Budget</th><th>Source</th><th>Wall</th><th>Game / Hash</th></tr></thead>
       <tbody>${body}</tbody>
     </table>
-  </div>`;
+    </div>
+  </details>`;
 }
 
 function renderEnvSection(env, rows) {
@@ -1066,7 +1545,7 @@ function renderEnvSection(env, rows) {
       </div>
     </div>
     <div class="notes">${(env.notes || []).map(note => `<div class="note">${esc(note)}</div>`).join("")}</div>
-    <div class="tables">${trackTable(env.id, rows)}${runTable(rows)}</div>
+    <div class="tables">${trackTable(env.id, rows)}${harnessModelTable(rows)}${runTable(rows)}</div>
   </section>`;
 }
 

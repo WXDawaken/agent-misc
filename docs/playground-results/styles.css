@@ -103,6 +103,20 @@ main {
   font-size: 12px;
 }
 
+.interpretation-note {
+  margin: -4px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 6px;
+  background: #fbfcfa;
+  color: var(--muted);
+}
+
+.interpretation-note strong {
+  color: var(--ink);
+}
+
 .controls {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr auto;
@@ -211,6 +225,18 @@ input[type="search"] {
   background: var(--panel);
 }
 
+.table-details {
+  overflow: visible;
+}
+
+.table-details > summary {
+  cursor: pointer;
+}
+
+.details-table-scroll {
+  overflow: auto;
+}
+
 .table-title {
   display: flex;
   align-items: center;
@@ -224,6 +250,41 @@ input[type="search"] {
 .table-title span {
   color: var(--muted);
   font-size: 12px;
+}
+
+.title-main {
+  display: grid;
+  gap: 2px;
+}
+
+.segmented {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid #c8d0cc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.segmented button {
+  min-height: 30px;
+  border: 0;
+  border-right: 1px solid #c8d0cc;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.segmented button:last-child {
+  border-right: 0;
+}
+
+.segmented button.active {
+  background: var(--blue);
+  color: #fff;
 }
 
 table {
@@ -256,6 +317,177 @@ tbody tr:hover {
 
 .track-name {
   font-weight: 650;
+}
+
+.heatmap-wrap {
+  overflow: auto;
+}
+
+.heatmap-table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  padding: 4px;
+}
+
+.heat-track {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 150px;
+  max-width: 150px;
+  background: #f3f6f4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.heatmap-table thead .heat-track {
+  z-index: 3;
+}
+
+.heat-col {
+  width: 74px;
+  max-width: 74px;
+  white-space: nowrap;
+}
+
+.heat-col div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.heat-col span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.heatmap-cell {
+  height: 38px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.heatmap-cell .heat-value {
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.heatmap-cell .heat-sub {
+  margin-top: 1px;
+  font-size: 10px;
+}
+
+.heat-empty {
+  background: #f1f3f1;
+  color: #97a19b;
+}
+
+.heat-success {
+  background: #d8eddf;
+  color: #215d36;
+}
+
+.heat-partial {
+  background: #f8e9bd;
+  color: #75520f;
+}
+
+.heat-rejected {
+  background: #efd1d1;
+  color: #833030;
+}
+
+.heat-noscore,
+.heat-unknown {
+  background: #e5ebef;
+  color: #52606d;
+}
+
+.track-list {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.harness-row td {
+  border-bottom: 0;
+}
+
+.group-details-row td {
+  padding: 0 10px 10px;
+  background: #fbfcfa;
+  border-bottom: 1px solid #e1e7e2;
+}
+
+.group-details-row:hover {
+  background: transparent;
+}
+
+.run-details summary {
+  cursor: pointer;
+  color: var(--blue);
+  font-weight: 650;
+  padding: 7px 9px;
+  white-space: nowrap;
+}
+
+.run-details {
+  border: 1px solid #e2e8e4;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.run-detail-panel {
+  max-height: 280px;
+  overflow: auto;
+  border-top: 1px solid #edf0ec;
+  background: #fff;
+}
+
+.run-detail-table {
+  min-width: 760px;
+  font-size: 12px;
+}
+
+.run-detail-table th,
+.run-detail-table td {
+  padding: 5px 6px;
+  border-bottom: 1px solid #edf0ec;
+  white-space: nowrap;
+}
+
+.run-detail-table th {
+  position: static;
+  z-index: auto;
+  background: #f8faf8;
+  font-size: 12px;
+}
+
+.run-detail-table .run-track {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.run-detail-table .pill {
+  min-height: 18px;
+  padding: 1px 5px;
+  font-size: 11px;
 }
 
 .muted {
